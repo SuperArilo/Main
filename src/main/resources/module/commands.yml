@@ -1,0 +1,25 @@
+reload:
+  show: 'reload'
+  describe: '重启服务器的配置选项'
+  usage: '/reload <参数>'
+  children:
+    - 'all'
+    - 'sql'
+    - 'socket'
+    - 'redis'
+tpa:
+  show: 'tpa'
+  describe: '玩家用于传送的指令'
+  usage: '/tpa <玩家>'
+tpahere:
+  show: 'tpahere'
+  describe: '将指定玩家传送到你身边'
+  usage: '/tpahere <玩家>'
+tpaccept:
+  show: 'tpaccept'
+  describe: '接受向你发送传送邀请的玩家'
+  useage: '/tpaccept <玩家>'
+tpall:
+  show: 'tpall'
+  describe: '将选中玩家传送到你身边'
+  useage: '/tpall <玩家> <玩家> <玩家> ....'

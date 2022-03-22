@@ -1,0 +1,5 @@
+homes-group:
+  default: 6
+  admin: 9
+disable-world:
+  - ''

@@ -1,0 +1,23 @@
+prefix: '&7[versailles]'
+database:
+  #yml、MySQL
+  use: MySQL
+  url: 'localhost:3306'
+  username: 'root'
+  userpwd: '728152568'
+white-list: true
+online-talk:
+  enable: false
+  url: 'ws://localhost:3090/api/onlinetalk/'
+redis:
+  enable: true
+  host: localhost
+  port: 6379
+  password: redis123456
+files-path:
+  - path: 'lang/message_cn.yml'
+    name: 'message'
+  - path: 'module/cutree/setting.yml'
+    name: 'cutree'
+  - path: 'module/commands.yml'
+    name: 'commands'

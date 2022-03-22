@@ -1,0 +1,34 @@
+name: Main
+version: '${project.version}'
+main: superarilo.main.Main
+softdepend: [PlaceholderAPI]
+api-version: 1.18
+commands:
+  versailles:
+    aliases:
+      - 'vs'
+  home:
+    aliases:
+      - 'homes'
+    permission: "versailles.home.home"
+  sethome:
+    permission: "versailles.home.sethome"
+  delhome:
+    permission: "versailles.home.delhome"
+
+  tpa:
+    permission: "versailles.tpa.tpa"
+  tpall:
+    permission: "versailles.tpa.tpall"
+  tpahere:
+    permission: "versailles.tpa.tpahere"
+  tpaccept:
+    permission: "versailles.tpa.tpaccept"
+
+
+  warp:
+    permission: "versailles.warp.warp"
+  setwarp:
+    permission: "versailles.warp.setwarp"
+  delwarp:
+    permission: "versailles.warp.delwarp"

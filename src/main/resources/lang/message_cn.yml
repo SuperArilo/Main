@@ -1,0 +1,13 @@
+tpa:
+  not-player: '&a这个指令只能在游戏里使用！'
+  unable-player: '&a该玩家&c离线&a或者&c不存在！'
+  send-message: '&a已发送传送请求...'
+  fail: '&c指令缺少集合或者输入不正确'
+  get-message: ''
+  accept: '[接受]'
+  refuse: '[拒绝]'
+reload:
+  vacancy: '&c请输入完整的指令集！'
+  config:
+    success: '&a配置文件已重新加载！'
+    fail: '&c重启过程发生错误，请检查控制台！'
