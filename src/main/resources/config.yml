@@ -5,7 +5,7 @@ database:
   url: 'localhost:3306'
   username: 'root'
   userpwd: '728152568'
-white-list: true
+white-list: false
 online-talk:
   enable: false
   url: 'ws://localhost:3090/api/onlinetalk/'

@@ -24,7 +24,8 @@ commands:
     permission: "versailles.tpa.tpahere"
   tpaccept:
     permission: "versailles.tpa.tpaccept"
-
+  tparefuse:
+    permission: "versailles.tpa.tparefuse"
 
   warp:
     permission: "versailles.warp.warp"

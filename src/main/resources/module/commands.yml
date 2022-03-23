@@ -19,6 +19,10 @@ tpaccept:
   show: 'tpaccept'
   describe: '接受向你发送传送邀请的玩家'
   useage: '/tpaccept <玩家>'
+tparefuse:
+  show: 'tparefuse'
+  describe: '囸决向你发送传送邀♂请的玩家'
+  useage: '/tparefuse <玩家>'
 tpall:
   show: 'tpall'
   describe: '将选中玩家传送到你身边'

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
+import superarilo.main.command.tpa.TpAcceptCommand;
 import superarilo.main.command.tpa.TpaCommand;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
@@ -67,7 +68,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("versailles").setExecutor(new ReloadCommand());
         getServer().getPluginCommand("versailles").setTabCompleter(new ReloadCommand());
         getServer().getPluginCommand("tpa").setExecutor(new TpaCommand());
-        getServer().getPluginCommand("tpa").setTabCompleter(new TpaCommand());
+        getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
@@ -105,9 +106,9 @@ public final class Main extends JavaPlugin {
             redisValue.auth(mainPlugin.getConfig().getString("redis.password"));
             redisValue.connect();
             if(redisValue.ping().equals("PONG")){
-                mainPlugin.getServer().getLogger().info("redis初始化连接成功！");
+                mainPlugin.getLogger().info("redis初始化连接成功！");
             } else {
-                mainPlugin.getServer().getLogger().warning("redis初始化连接失败！！！！");
+                mainPlugin.getLogger().warning("redis初始化连接失败！！！！");
             }
         }
     }

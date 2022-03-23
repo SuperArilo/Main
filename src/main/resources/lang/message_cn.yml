@@ -1,11 +1,16 @@
 tpa:
   not-player: '&a这个指令只能在游戏里使用！'
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
-  send-message: '&a已发送传送请求...'
+  send-message: '&a已发送传送请求给玩家&e%vs_tpa_be_player%&a ...'
   fail: '&c指令缺少集合或者输入不正确'
-  get-message: ''
+  get-message: '&6叮、叮、叮！&a玩家&e%vs_tpa_sender%&a向你发起了搞♂基邀请 ...'
   accept: '[接受]'
   refuse: '[拒绝]'
+tpaccept:
+  not-player: '&a这个指令只能在游戏里使用！'
+  no-have: '&a你当前没有任何的传送请求'
+  unable-player: '&a该玩家&c离线&a或者&c不存在！'
+  success: '&a传送成功！'
 reload:
   vacancy: '&c请输入完整的指令集！'
   config:
