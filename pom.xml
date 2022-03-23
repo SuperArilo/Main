@@ -49,7 +49,7 @@
                 <configuration>
                     <!-- 指定打包的jar包输出路径-->
                     <outputDirectory>
-                        D:\WorkProject\Min-master\server\plugins
+                        D:\WorkProject\Main-master\server\plugins
                     </outputDirectory>
                 </configuration>
             </plugin>

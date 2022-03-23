@@ -9,32 +9,31 @@ import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
 
-import java.util.Objects;
-
 public class TpAcceptCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player){
             if (s.equals("tpaccept")){
                 String keyName = commandSender.getName() + "_tpa";
-                String playerSenderName = Main.redisValue.get(keyName);
-                if(playerSenderName != null){
-                    Player playerSender = Main.mainPlugin.getServer().getPlayer(playerSenderName);
-                    if (playerSender != null){
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpaccept.success"))));
+                if(Main.redisValue.exists(keyName)){
+                    Player playerSender = Main.mainPlugin.getServer().getPlayer(Main.redisValue.get(keyName));
+                    if (playerSender != null && !playerSender.getName().equals(commandSender.getName())){
+                        String publicMessage = ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.success"));
+                        commandSender.sendMessage(publicMessage);
+                        playerSender.sendMessage(publicMessage);
                         playerSender.teleport(((Player) commandSender).getLocation());
-                        Main.redisValue.del(keyName);
                     } else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player"))));
+                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player")));
                     }
+                    Main.redisValue.del(keyName);
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have"))));
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have")));
                 }
             } else {
-                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpaccept.usage"))));
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpaccept.usage")));
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player"))));
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player")));
         }
         return true;
     }

@@ -20,7 +20,7 @@ public class ReloadCommand implements TabExecutor {
             if(sender.isOp()){
                 return reloadComm(sender, args);
             } else {
-                sender.sendMessage("抱歉，你没有权限执行此命令！");
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.not-op")));
                 return false;
             }
         } else {
@@ -31,46 +31,45 @@ public class ReloadCommand implements TabExecutor {
 
     private boolean reloadComm(@NotNull CommandSender sender, @NotNull String[] args) {
         if(args[0].equals("reload")){
-            Main.mainPlugin.reloadConfig();
             if (args.length <= 1){
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.vacancy")));
                 return true;
             }
-            String argsTwo = args[1];
             FileConfigs fileConfigs = new FileConfigs(Main.mainPlugin);
-            switch (argsTwo){
+            switch (args[1]){
                 case "all":
+                    Main.mainPlugin.saveDefaultConfig();
                     Main.mainPlugin.reloadConfig();
                     if(fileConfigs.reloadAllConfigs()){
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',FileConfigs.fileConfigs.get("message").getString("reload.config.success")));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.config.success")));
                     } else {
-                        sender.sendMessage(FileConfigs.fileConfigs.get("message").getString("reload.config.fail"));
+                        sender.sendMessage(Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.config.fail"));
                     }
                     break;
                 case "sql":
                     if(fileConfigs.reloadSQL()){
-                        sender.sendMessage(ChatColor.GREEN + "SQL已重启成功！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.SQL.success")));
                     } else {
-                        sender.sendMessage(ChatColor.RED + "SQL重启失败，请检查控制台！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.SQL.fail")));
                     }
                     break;
                 case "socket":
                     if (fileConfigs.reloadSocket()){
-                        sender.sendMessage(ChatColor.GREEN + "socket已重启成功！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.socket.success")));
                     } else {
-                        sender.sendMessage(ChatColor.RED + "socket重启失败，请检查控制台！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.socket.fail")));
                     }
                     break;
                 case "redis":
                     if (fileConfigs.reloadRedis()){
-                        sender.sendMessage(ChatColor.GREEN + "redis已重启成功！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.redis.success")));
                     } else {
-                        sender.sendMessage(ChatColor.RED + "redis重启失败，请检查控制台！");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.redis.fail")));
                     }
             }
             return true;
         } else {
-            sender.sendMessage("你输入的指令有误，请检查！");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.vacancy")));
             return false;
         }
     }

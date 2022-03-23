@@ -1,4 +1,4 @@
-prefix: '&7[versailles]'
+prefix: '&6[凡尔赛] '
 database:
   #yml、MySQL
   use: MySQL

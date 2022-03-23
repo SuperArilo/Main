@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
 import superarilo.main.command.tpa.TpAcceptCommand;
 import superarilo.main.command.tpa.TpaCommand;
+import superarilo.main.command.tpa.TpaRefuseCommand;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
@@ -69,6 +69,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("versailles").setTabCompleter(new ReloadCommand());
         getServer().getPluginCommand("tpa").setExecutor(new TpaCommand());
         getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
+        getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);

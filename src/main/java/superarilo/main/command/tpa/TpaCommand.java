@@ -1,7 +1,6 @@
 package superarilo.main.command.tpa;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -14,8 +13,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import java.util.Objects;
+import superarilo.main.function.SendFunctionMessage;
 
+@SuppressWarnings("deprecation")
 public class TpaCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -23,37 +23,27 @@ public class TpaCommand implements CommandExecutor {
             if ("tpa".equals(s)) {
                 if (strings.length == 1) {
                     Player bePlayer = Main.mainPlugin.getServer().getPlayer(strings[0]);
-                    if (bePlayer != null) {
-                        commandSender.sendMessage(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(bePlayer, FileConfigs.fileConfigs.get("message").getString("tpa.send-message"))));
-                        TextComponent accept = new TextComponent(FileConfigs.fileConfigs.get("message").getString("tpa.accept"));
-                        accept.setColor(net.md_5.bungee.api.ChatColor.GREEN);
-                        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("同意请求")));
-                        accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/tpaccept"));
-                        accept.setBold(true);
-                        BaseComponent refuse = new TextComponent(FileConfigs.fileConfigs.get("message").getString("tpa.refuse"));
-                        refuse.setColor(net.md_5.bungee.api.ChatColor.RED);
-                        refuse.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝")));
-                        refuse.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/tparefuse"));
-                        refuse.setBold(true);
-                        bePlayer.sendMessage(Objects.requireNonNull(PlaceholderAPI.setPlaceholders((Player) commandSender, FileConfigs.fileConfigs.get("message").getString("tpa.get-message"))));
-                        bePlayer.sendMessage(accept,new TextComponent(" 或者 "),refuse);
+                    if (bePlayer != null && !bePlayer.getName().equals(commandSender.getName())) {
+                        commandSender.sendMessage(PlaceholderAPI.setPlaceholders(bePlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.send-message")));
+                        bePlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.get-message")));
+                        bePlayer.sendMessage(new SendFunctionMessage(net.md_5.bungee.api.ChatColor.GREEN,"[同意]", ClickEvent.Action.RUN_COMMAND,"/tpaccept", HoverEvent.Action.SHOW_TEXT,new Text("豪爽同意"),true).getFunctionText(),new TextComponent(" 或者 "),new SendFunctionMessage(net.md_5.bungee.api.ChatColor.RED,"[拒绝]", ClickEvent.Action.RUN_COMMAND,"/tparefuse", HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝"),true).getFunctionText());
                         String keyName = bePlayer.getName() + "_tpa";
                         if(Main.redisValue.exists(keyName)){
                             Main.redisValue.del(keyName);
                         }
-                        Main.redisValue.set(bePlayer.getName() + "_tpa",commandSender.getName());
-                        Main.redisValue.expire(keyName,10);
+                        Main.redisValue.set(keyName, commandSender.getName());
+                        Main.redisValue.expire(keyName,15);
                     } else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpa.unable-player"))));
+                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.unable-player")));
                     }
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpa.fail"))));
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.fail")));
                 }
             } else {
-                commandSender.sendMessage(Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpa.usage")));
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpa.usage")));
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FileConfigs.fileConfigs.get("message").getString("tpa.not-player"))));
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.not-player")));
         }
         return true;
     }
