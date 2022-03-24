@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
 import superarilo.main.command.tpa.TpAcceptCommand;
 import superarilo.main.command.tpa.TpaCommand;
+import superarilo.main.command.tpa.TpaHereCommand;
 import superarilo.main.command.tpa.TpaRefuseCommand;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
@@ -18,6 +19,7 @@ import superarilo.main.listener.onlinetalk.OnlineTalkListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import redis.clients.jedis.Jedis;
 
 public final class Main extends JavaPlugin {
@@ -70,6 +72,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("tpa").setExecutor(new TpaCommand());
         getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
         getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
+        getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);

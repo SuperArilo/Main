@@ -3,20 +3,30 @@ tpa:
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
   send-message: '&a已发送传送请求给玩家 &e%vs_tpa_be_player%&a'
   fail: '&c指令缺少集合或者输入不正确'
-  get-message: '&6叮、叮、叮！&a玩家 &e%vs_tpa_sender% &a向你发起了搞♂基邀请 ...'
-  accept: '[接受]'
-  refuse: '[拒绝]'
+  get-message: '&9叮、叮、叮！&a玩家 &e%vs_tpa_sender% &a向你发起了搞♂基邀请 ...'
 tpaccept:
   not-player: '&a这个指令只能在游戏里使用！'
   no-have: '&a你当前没有任何的传送请求'
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
+  fail: '&c指令缺少集合或者输入不正确'
   success: '&a传送成功！'
-tparefuse:
+tpahere:
   not-player: '&a这个指令只能在游戏里使用！'
   no-have: '&a你当前没有任何的传送请求'
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
+  fail: '&c指令缺少集合或者输入不正确'
+  send-message: '&a已发送传送请求给玩家 &e%vs_tpa_be_player%&a'
+  success: '&a传送成功！'
+  get-message: '&9叮、叮、叮！&a玩家 &e%vs_tpa_sender% &a想让你去Ta那玩♂耍 ...'
+tparefuse:
+  not-player: '&a这个指令只能在游戏里使用！'
+  no-have: '&a你当前没有任何的传送请求'
+  fail: '&c指令缺少集合或者输入不正确'
+  unable-player: '&a该玩家&c离线&a或者&c不存在！'
   success: '&a你已&c拒绝&a玩家 &e%vs_tpa_sender% &a的传送请求！'
   sender-refuse: '&a玩家 &e%vs_tpa_be_player%&a &c拒绝&a了你的传送请求！'
+tpalist:
+  not-player: '&a这个指令只能在游戏里使用！'
 reload:
   vacancy: '&c请输入完整的指令集！'
   not-op: '&c很抱歉，你没有权限执行此命令！'
