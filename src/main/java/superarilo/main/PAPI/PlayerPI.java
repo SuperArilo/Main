@@ -26,6 +26,18 @@ public class PlayerPI extends PlaceholderExpansion {
         if (identifier.equalsIgnoreCase("tpa_be_player")){
             return player.getName();
         }
+        if (identifier.equalsIgnoreCase("player_x")){
+            return String.valueOf(player.getLocation().getBlockX());
+        }
+        if(identifier.equalsIgnoreCase("player_y")){
+            return String.valueOf(player.getLocation().getBlockY());
+        }
+        if (identifier.equalsIgnoreCase("player_z")){
+            return String.valueOf(player.getLocation().getBlockZ());
+        }
+        if (identifier.equalsIgnoreCase("player_at_world")){
+            return player.getWorld().getName();
+        }
         return null;
     }
 }

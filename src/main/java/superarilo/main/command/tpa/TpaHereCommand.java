@@ -23,7 +23,7 @@ public class TpaHereCommand implements CommandExecutor {
             if(s.equals("tpahere")){
                 if(strings.length == 1){
                     Player bePlayer = Main.mainPlugin.getServer().getPlayer(strings[0]);
-                    if (bePlayer != null){
+                    if (bePlayer != null && !bePlayer.getName().equals(commandSender.getName())){
                         commandSender.sendMessage(PlaceholderAPI.setPlaceholders(bePlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.send-message")));
                         bePlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.get-message")));
                         bePlayer.sendMessage(new SendFunctionMessage(net.md_5.bungee.api.ChatColor.GREEN,"[同意]", ClickEvent.Action.RUN_COMMAND,"/tpaccept " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("豪爽同意"),true).getFunctionText(),new TextComponent(" 或者 "),new SendFunctionMessage(net.md_5.bungee.api.ChatColor.RED,"[拒绝]", ClickEvent.Action.RUN_COMMAND,"/tparefuse " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝"),true).getFunctionText());

@@ -2,17 +2,8 @@ menu-settings:
   name: '玩家列表'
   rows: 5
   auto-refresh: 1
-prev:
-  MATERIAL: PLAYER_HEAD
-  SKULL-OWNER: '{player}'
-  POSITION-X: 1
-  POSITION-Y: 1
-  NAME: '&6%player_name%'
-  LORE:
-    - 'UUID: %player_uuid%'
-    - '饱和： %player_food_level%'
-    - '位置： &2X: &a%player_compass_x% &2Y: &a%player_compass_y% &2Z: &a%player_compass_z%'
-    - 'van币： &b%vault_eco_balance_formatted%'
-  ACTIONS:
-    - ''
-next:
+  player-head-lore:
+    - 'x: %vs_player_x% y: %vs_player_y% z: %vs_player_x%'
+    - '位置: %vs_player_at_world%'
+    - '&3左击发起传送请求'
+    - '&3右击让玩家传送到你身边'

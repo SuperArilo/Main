@@ -6,10 +6,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
-import superarilo.main.command.tpa.TpAcceptCommand;
-import superarilo.main.command.tpa.TpaCommand;
-import superarilo.main.command.tpa.TpaHereCommand;
-import superarilo.main.command.tpa.TpaRefuseCommand;
+import superarilo.main.command.tpa.*;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
@@ -21,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import redis.clients.jedis.Jedis;
+import superarilo.main.listener.tpa.GuiListener;
 
 public final class Main extends JavaPlugin {
 
@@ -73,11 +71,13 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
         getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
         getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
+        getServer().getPluginCommand("tpalist").setExecutor(new OpenGUI());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
         getServer().getPluginManager().registerEvents(new CutreeListener(),this);
         getServer().getPluginManager().registerEvents(new OnlineTalkListener(),this);
+        getServer().getPluginManager().registerEvents(new GuiListener(), this);
     }
 
     public static void startSQL(){

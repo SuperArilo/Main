@@ -21,3 +21,5 @@ files-path:
     name: 'cutree'
   - path: 'module/commands.yml'
     name: 'commands'
+  - path: 'module/tpa/gui.yml'
+    name: 'tpalist'
