@@ -4,4 +4,7 @@
     <select id="whitelistCheckUser" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT count(*)  FROM mc_whitelist where username = #{playerName} and mc_uuid = #{uuid}
     </select>
+    <select id="getPlayerHome" resultType="superarilo.main.entity.PlayerHome">
+        select * from mc_home_list where player_name = #{playerName} and player_uuid = #{uuid}
+    </select>
 </mapper>

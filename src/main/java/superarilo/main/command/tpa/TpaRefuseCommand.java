@@ -30,14 +30,18 @@ public class TpaRefuseCommand implements CommandExecutor {
                     } else {
                         commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tparefuse.unable-player")));
                     }
+                    return true;
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tparefuse.fail")));
+                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tparefuse.usage")));
+                    return false;
                 }
+            } else {
+                return false;
             }
         } else {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tparefuse.not-player")));
+            return true;
         }
-        return true;
     }
 
     private void TpaRefuseSendMessage(@NotNull CommandSender commandSender, Player comGetPlayer, String keyNameTpa) {

@@ -33,13 +33,17 @@ public class TpaHereCommand implements CommandExecutor {
                     } else {
                         commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.unable-player")));
                     }
+                    return true;
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.fail")));
+                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpahere.usage")));
+                    return false;
                 }
+            } else {
+                return false;
             }
         } else {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.not-player")));
+            return true;
         }
-        return true;
     }
 }

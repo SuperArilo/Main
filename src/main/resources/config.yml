@@ -23,3 +23,5 @@ files-path:
     name: 'commands'
   - path: 'module/tpa/gui.yml'
     name: 'tpalist'
+  - path: 'module/home/gui.yml'
+    name: 'homelist'

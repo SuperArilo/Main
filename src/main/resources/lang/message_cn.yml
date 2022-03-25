@@ -42,3 +42,6 @@ reload:
   redis:
     success: '&aredis重启成功！'
     fail: '&credits重启失败，请检查控制台！'
+home:
+  no-have: '&a这个&c家&a不存在！'
+  not-player: '&a这个指令只能在游戏里使用！'

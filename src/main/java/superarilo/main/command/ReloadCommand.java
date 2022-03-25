@@ -21,7 +21,7 @@ public class ReloadCommand implements TabExecutor {
                 return reloadComm(sender, args);
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.not-op")));
-                return false;
+                return true;
             }
         } else {
             return reloadComm(sender, args);
@@ -67,11 +67,10 @@ public class ReloadCommand implements TabExecutor {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.redis.fail")));
                     }
             }
-            return true;
         } else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.vacancy")));
-            return false;
         }
+        return true;
     }
 
     @Override

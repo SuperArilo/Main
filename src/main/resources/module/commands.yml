@@ -1,7 +1,7 @@
 reload:
   show: 'reload'
   describe: '重启服务器的配置选项'
-  usage: '/reload <参数>'
+  usage: '&a/reload <参数>'
   children:
     - 'all'
     - 'sql'
@@ -10,20 +10,28 @@ reload:
 tpa:
   show: 'tpa'
   describe: '玩家用于传送的指令'
-  usage: '/tpa <玩家>'
+  usage: '&a/tpa <玩家>'
 tpahere:
   show: 'tpahere'
   describe: '将指定玩家传送到你身边'
-  usage: '/tpahere <玩家>'
+  usage: '&a/tpahere <玩家>'
 tpaccept:
   show: 'tpaccept'
   describe: '接受向你发送传送邀请的玩家'
-  useage: '/tpaccept <玩家>'
+  usage: '&a/tpaccept <玩家>'
 tparefuse:
   show: 'tparefuse'
   describe: '囸决向你发送传送邀♂请的玩家'
-  usage: '/tparefuse <玩家>'
+  usage: '&a/tparefuse <玩家>'
+tpalist:
+  show: 'tpalist'
+  describe: '打开玩家在线列表'
+  usage: '&a使用方法: /tpalist'
 tpall:
   show: 'tpall'
   describe: '将选中玩家传送到你身边'
-  useage: '/tpall <玩家> <玩家> <玩家> ....'
+  usage: '&a/tpall <玩家> <玩家> <玩家> ....'
+home:
+  show: 'home'
+  describe: '打开你保存的家列表或者传送到指定家位置'
+  usage: '&a/home 或者 /home + <家>'

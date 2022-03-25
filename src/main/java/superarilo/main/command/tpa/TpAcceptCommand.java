@@ -37,13 +37,17 @@ public class TpAcceptCommand implements CommandExecutor {
                     } else {
                         commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player")));
                     }
+                    return true;
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.fail")));
+                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpaccept.usage","使用方法")));
+                    return false;
                 }
+            } else {
+                return false;
             }
         } else {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player")));
+            return true;
         }
-        return true;
     }
 }

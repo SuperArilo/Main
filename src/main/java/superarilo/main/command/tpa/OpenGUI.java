@@ -15,11 +15,19 @@ public class OpenGUI implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player){
             if(s.equals("tpalist")){
-                new ShowPlayerList((Player) commandSender).open();
+                if (strings.length == 0){
+                    new ShowPlayerList((Player) commandSender).open();
+                    return true;
+                } else {
+                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpalist.usage","使用方法")));
+                    return false;
+                }
+            } else {
+                return false;
             }
         } else {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpalist.not-player")));
+            return true;
         }
-        return false;
     }
 }

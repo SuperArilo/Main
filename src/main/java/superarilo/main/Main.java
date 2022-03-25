@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
+import superarilo.main.command.home.HomeCommand;
 import superarilo.main.command.tpa.*;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
@@ -72,6 +73,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
         getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
         getServer().getPluginCommand("tpalist").setExecutor(new OpenGUI());
+        getServer().getPluginCommand("home").setExecutor(new HomeCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
