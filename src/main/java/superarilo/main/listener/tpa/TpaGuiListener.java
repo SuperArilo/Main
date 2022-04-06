@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import superarilo.main.function.FileConfigs;
 
 @SuppressWarnings("deprecation")
-public class GuiListener implements Listener {
+public class TpaGuiListener implements Listener {
     @EventHandler
     public void guiClickFunction(InventoryClickEvent event){
         InventoryView inventoryView = event.getWhoClicked().getOpenInventory();

@@ -14,15 +14,15 @@ tpa:
 tpahere:
   show: 'tpahere'
   describe: '将指定玩家传送到你身边'
-  usage: '&a/tpahere <玩家>'
+  usage: '&a使用方法: /tpahere <玩家>'
 tpaccept:
   show: 'tpaccept'
   describe: '接受向你发送传送邀请的玩家'
-  usage: '&a/tpaccept <玩家>'
+  usage: '&a使用方法: /tpaccept <玩家>'
 tparefuse:
   show: 'tparefuse'
   describe: '囸决向你发送传送邀♂请的玩家'
-  usage: '&a/tparefuse <玩家>'
+  usage: '&a使用方法: /tparefuse <玩家>'
 tpalist:
   show: 'tpalist'
   describe: '打开玩家在线列表'
@@ -30,8 +30,8 @@ tpalist:
 tpall:
   show: 'tpall'
   describe: '将选中玩家传送到你身边'
-  usage: '&a/tpall <玩家> <玩家> <玩家> ....'
+  usage: '&a使用方法: /tpall <玩家> <玩家> <玩家> ....'
 home:
   show: 'home'
   describe: '打开你保存的家列表或者传送到指定家位置'
-  usage: '&a/home 或者 /home + <家>'
+  usage: '&a使用方法: /home 或者 /home + <家>'

@@ -37,5 +37,6 @@ public class ShowPlayerList {
     }
     public void open(){
         this.player.openInventory(inventory);
+        this.player.updateInventory();
     }
 }

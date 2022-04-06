@@ -25,3 +25,5 @@ files-path:
     name: 'tpalist'
   - path: 'module/home/gui.yml'
     name: 'homelist'
+  - path: 'module/home/setting.yml'
+    name: 'home'

@@ -13,13 +13,14 @@ import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.listener.WhitelistListener;
 import superarilo.main.listener.cutree.CutreeListener;
+import superarilo.main.listener.home.HomeGuiListener;
 import superarilo.main.listener.onlinetalk.OnlineTalkListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import redis.clients.jedis.Jedis;
-import superarilo.main.listener.tpa.GuiListener;
+import superarilo.main.listener.tpa.TpaGuiListener;
 
 public final class Main extends JavaPlugin {
 
@@ -79,7 +80,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
         getServer().getPluginManager().registerEvents(new CutreeListener(),this);
         getServer().getPluginManager().registerEvents(new OnlineTalkListener(),this);
-        getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        getServer().getPluginManager().registerEvents(new TpaGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new HomeGuiListener(), this);
     }
 
     public static void startSQL(){

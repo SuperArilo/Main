@@ -1,5 +1,6 @@
 homes-group:
   default: 6
   admin: 9
+delay: 3
 disable-world:
   - ''

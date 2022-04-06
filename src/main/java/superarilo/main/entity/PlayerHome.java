@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class PlayerHome {
     private String homeId;
     private String homeName;
-    private String playerName;
     private String playerUUID;
     private int locationX;
     private int locationY;
@@ -29,14 +28,6 @@ public class PlayerHome {
 
     public void setHomeId(String homeId) {
         this.homeId = homeId;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 
     public String getPlayerUUID() {

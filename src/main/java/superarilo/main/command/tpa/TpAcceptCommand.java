@@ -23,13 +23,13 @@ public class TpAcceptCommand implements CommandExecutor {
                             String publicMessage = ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.success"));
                             commandSender.sendMessage(publicMessage);
                             comGetPlayer.sendMessage(publicMessage);
-                            comGetPlayer.teleport(((Player) commandSender).getLocation());
+                            comGetPlayer.teleportAsync(((Player) commandSender).getLocation());
                             Main.redisValue.del(keyNameTpa);
                         } else if (Main.redisValue.exists(keyNameTpaHere)){
                             String publicMessage = ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.success"));
                             commandSender.sendMessage(publicMessage);
                             comGetPlayer.sendMessage(publicMessage);
-                            ((Player) commandSender).teleport(comGetPlayer.getLocation());
+                            ((Player) commandSender).teleportAsync(comGetPlayer.getLocation());
                             Main.redisValue.del(keyNameTpaHere);
                         }else {
                             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have")));

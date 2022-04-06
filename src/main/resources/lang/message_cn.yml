@@ -45,3 +45,4 @@ reload:
 home:
   no-have: '&a这个&c家&a不存在！'
   not-player: '&a这个指令只能在游戏里使用！'
+  teleporting: '&a传送过程中！请不要移动...'
