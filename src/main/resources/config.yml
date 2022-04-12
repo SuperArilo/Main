@@ -2,9 +2,12 @@ prefix: '&6[凡尔赛] '
 database:
   #yml、MySQL
   use: MySQL
-  url: 'localhost:3306'
+#  url: 'localhost:3306'
+#  username: 'root'
+#  userpwd: '728152568'
+  url: '182.42.112.115:3306'
   username: 'root'
-  userpwd: '728152568'
+  userpwd: 'mysql123456@'
 white-list: false
 online-talk:
   enable: false
@@ -27,3 +30,5 @@ files-path:
     name: 'homelist'
   - path: 'module/home/setting.yml'
     name: 'home'
+  - path: 'module/home/editor.yml'
+    name: 'homeEditor'

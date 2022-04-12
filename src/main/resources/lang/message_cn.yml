@@ -27,22 +27,31 @@ tparefuse:
   sender-refuse: '&a玩家 &e%vs_tpa_be_player%&a &c拒绝&a了你的传送请求！'
 tpalist:
   not-player: '&a这个指令只能在游戏里使用！'
+SQL:
+  fail: '&c初始化数据库连接失败，无法完成当前任务！'
 reload:
   vacancy: '&c请输入完整的指令集！'
   not-op: '&c很抱歉，你没有权限执行此命令！'
   config:
     success: '&a配置文件已重新加载！'
     fail: '&c重启过程发生错误，请检查控制台！'
-  SQL:
-    success: '&aSQL已重启成功！'
-    fail: '&cSQL重启失败，请检查控制台！'
   socket:
     success: '&asocket重启成功！'
     fail: '&socket重启失败，请检查控制台！"'
   redis:
     success: '&aredis重启成功！'
     fail: '&credits重启失败，请检查控制台！'
+break-teleport: '&c传送失败,请不要移动！'
 home:
   no-have: '&a这个&c家&a不存在！'
   not-player: '&a这个指令只能在游戏里使用！'
+  teleporting: '&a传送过程中！请不要移动...'
+sethome:
+  not-player: '&a这个指令只能在游戏里使用！'
+  had: '&a已经有个相同ID的家了！'
+  success: '&a成功设置了一个家，id为 '
+back:
+  not-player: '&a这个指令只能在游戏里使用！'
+  death: '&a输入/back 返回死亡地点！'
+  no-back: '&a当前没有可返回的传送点！'
   teleporting: '&a传送过程中！请不要移动...'

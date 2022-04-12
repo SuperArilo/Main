@@ -1,0 +1,52 @@
+menu-settings:
+  name: '家编辑'
+  auto-refresh: 1
+mask:
+  material: GRAY_STAINED_GLASS_PANE
+  slot: [0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44,45,46,47,49,51,52,53]
+function:
+  home-icon:
+    type: CHANGEICON
+    slot: 13
+    name: '&e家图标'
+    lore:
+      - '&a修改家的图标'
+      - '&5拖拽点击修改'
+  home-name:
+    type: CHANGENAME
+    material: glow_item_frame
+    slot: 31
+    name: '&f家名称'
+    lore:
+      - '&a当前: &3%vs_home_name%'
+      - '&5点击修改家名称'
+  home-position:
+    type: CHANGEPOSITION
+    material: compass
+    slot: 20
+    name: '&3坐标'
+    lore:
+      - '&a当前: &3%vs_home_x%&f , &3%vs_home_y%&f , &3%vs_home_z%'
+      - '&5点击设置为当前坐标'
+  home-delete:
+    type: DELETE
+    material: BARRIER
+    slot: 24
+    name: '&c删除'
+    lore:
+      - '&5点击删除家'
+      - '&c此操作不可逆'
+  home-save:
+    type: SAVE
+    material: lime_concrete
+    slot: 48
+    name: '&a保存'
+    lore:
+      - '&5点击保存设置'
+  home-back:
+    type: BACK
+    material: arrow
+    slot: 50
+    name: '&f返回'
+    lore:
+      - '&5点击返回上一级菜单'

@@ -1,18 +1,23 @@
 package superarilo.main.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("mc_home_list")
 public class PlayerHome {
     private String homeId;
     private String homeName;
+    @TableField(value = "player_uuid")
     private String playerUUID;
-    private int locationX;
-    private int locationY;
-    private int locationZ;
+    private double locationX;
+    private double locationY;
+    private double locationZ;
     private String world;
     private String worldAlias;
     private String material;
+    private double vectorX;
+    private double vectorY;
+    private double vectorZ;
 
     public String getHomeName() {
         return homeName;
@@ -38,26 +43,6 @@ public class PlayerHome {
         this.playerUUID = playerUUID;
     }
 
-    public int getLocationX() {
-        return locationX;
-    }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-
-    public int getLocationZ() {
-        return locationZ;
-    }
-
     public void setLocationZ(int locationZ) {
         this.locationZ = locationZ;
     }
@@ -70,6 +55,38 @@ public class PlayerHome {
         this.world = world;
     }
 
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public double getLocationX() {
+        return locationX;
+    }
+
+    public void setLocationX(double locationX) {
+        this.locationX = locationX;
+    }
+
+    public double getLocationY() {
+        return locationY;
+    }
+
+    public void setLocationY(double locationY) {
+        this.locationY = locationY;
+    }
+
+    public double getLocationZ() {
+        return locationZ;
+    }
+
+    public void setLocationZ(double locationZ) {
+        this.locationZ = locationZ;
+    }
+
     public String getWorldAlias() {
         return worldAlias;
     }
@@ -78,11 +95,27 @@ public class PlayerHome {
         this.worldAlias = worldAlias;
     }
 
-    public String getMaterial() {
-        return material;
+    public double getVectorX() {
+        return vectorX;
     }
 
-    public void setMaterial(String material) {
-        this.material = material;
+    public void setVectorX(double vectorX) {
+        this.vectorX = vectorX;
+    }
+
+    public double getVectorY() {
+        return vectorY;
+    }
+
+    public void setVectorY(double vectorY) {
+        this.vectorY = vectorY;
+    }
+
+    public double getVectorZ() {
+        return vectorZ;
+    }
+
+    public void setVectorZ(double vectorZ) {
+        this.vectorZ = vectorZ;
     }
 }

@@ -1,12 +1,15 @@
 name: Main
 version: '${project.version}'
 main: superarilo.main.Main
-softdepend: [PlaceholderAPI]
+depend: ['Multiverse-Core']
+softdepend: ['PlaceholderAPI']
 api-version: 1.18
 commands:
   versailles:
     aliases:
       - 'vs'
+  back:
+    permission: "versailles.back.back"
   home:
     aliases:
       - 'homes'

@@ -1,26 +1,28 @@
 package superarilo.main;
 
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
+import superarilo.main.command.back.BackCommand;
 import superarilo.main.command.home.HomeCommand;
+import superarilo.main.command.home.SetHomeCommand;
 import superarilo.main.command.tpa.*;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.listener.home.AboutHome;
+import superarilo.main.listener.player.AboutPlayer;
 import superarilo.main.listener.WhitelistListener;
 import superarilo.main.listener.cutree.CutreeListener;
-import superarilo.main.listener.home.HomeGuiListener;
-import superarilo.main.listener.onlinetalk.OnlineTalkListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import redis.clients.jedis.Jedis;
-import superarilo.main.listener.tpa.TpaGuiListener;
 
 public final class Main extends JavaPlugin {
 
@@ -28,6 +30,7 @@ public final class Main extends JavaPlugin {
     public static SqlSessionFactory SQL_SESSIONS = null;
     public static SocketClient socketClient = null;
     public static Jedis redisValue = null;
+    public static MVWorldManager mvWorldManager = null;
 
     @Override
     public void onLoad(){
@@ -41,6 +44,12 @@ public final class Main extends JavaPlugin {
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new PlayerPI().register();
         }
+        MultiverseCore core = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
+        if (core != null){
+            mvWorldManager = core.getMVWorldManager();
+        } else {
+            getLogger().warning("多世界插件加载失败！！");
+        }
         startSQL(); //开始连接数据库
         startRedis(); //开始连接redis
         startSocket(); //开始连接Socket
@@ -53,7 +62,6 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         saveConfig(); //保存数据
         //关闭数据库链接
-        SQL_SESSIONS.openSession().close();
         SQL_SESSIONS = null;
         //关闭socket链接
         if(getConfig().getBoolean("online-talk.enable")){
@@ -75,19 +83,20 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
         getServer().getPluginCommand("tpalist").setExecutor(new OpenGUI());
         getServer().getPluginCommand("home").setExecutor(new HomeCommand());
+        getServer().getPluginCommand("back").setExecutor(new BackCommand());
+        getServer().getPluginCommand("sethome").setExecutor(new SetHomeCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
         getServer().getPluginManager().registerEvents(new CutreeListener(),this);
-        getServer().getPluginManager().registerEvents(new OnlineTalkListener(),this);
-        getServer().getPluginManager().registerEvents(new TpaGuiListener(), this);
-        getServer().getPluginManager().registerEvents(new HomeGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new AboutPlayer(), this);
+        getServer().getPluginManager().registerEvents(new AboutHome(), this);
     }
 
     public static void startSQL(){
         try {
             SQL_SESSIONS = new MybatisSqlSessionFactoryBuilder().build(Resources.getResourceAsStream("MybatisPlus.xml"));
-            mainPlugin.getLogger().info("数据库初始化成功！");
+            mainPlugin.getLogger().info("数据库工厂初始化成功！");
         }
         catch(IOException e) {
             mainPlugin.getLogger().warning("Mybatis配置文件错误！");
