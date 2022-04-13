@@ -34,7 +34,8 @@ public class SetHomeCommand implements CommandExecutor {
                 playerHome.setLocationX(Double.parseDouble(decimal.format(location.getX())));
                 playerHome.setLocationY(Double.parseDouble(decimal.format(location.getY())));
                 playerHome.setLocationZ(Double.parseDouble(decimal.format(location.getZ())));
-                playerHome.setMaterial(location.getBlock().getRelative(BlockFace.DOWN).getType().name());
+                String blockName = location.getBlock().getRelative(BlockFace.DOWN).getType().name();
+                playerHome.setMaterial(blockName);
                 playerHome.setWorld(((Player) commandSender).getWorld().getName());
                 playerHome.setWorldAlias(Main.mvWorldManager.getMVWorld(((Player) commandSender).getWorld()).getAlias());
                 playerHome.setVectorX(Double.parseDouble(decimal.format(vector.getX())));

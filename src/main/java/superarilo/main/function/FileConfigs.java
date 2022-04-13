@@ -9,18 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileConfigs {
-    public static Map<String,FileConfiguration> fileConfigs = new HashMap<>();
-    private final JavaPlugin plugin;
 
-    public FileConfigs(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    public static Map<String,FileConfiguration> fileConfigs = new HashMap<>();
+
     public void checkFiles(){
-        for (Map<?, ?> map : plugin.getConfig().getMapList("files-path")){
+        for (Map<?, ?> map : Main.mainPlugin.getConfig().getMapList("files-path")){
             String publicPath = map.get("path").toString();
-            File fileGet = new File(plugin.getDataFolder(),publicPath);
+            File fileGet = new File(Main.mainPlugin.getDataFolder(),publicPath);
             if (!fileGet.exists()){
-                plugin.saveResource(publicPath, false);
+                Main.mainPlugin.saveResource(publicPath, false);
             }
             fileConfigs.put(map.get("name").toString(), YamlConfiguration.loadConfiguration(fileGet));
         }
@@ -35,7 +32,7 @@ public class FileConfigs {
     }
     public boolean reloadSQL(){
         if(Main.SQL_SESSIONS != null){
-            plugin.getLogger().info("正在关闭数据库连接...");
+            Main.mainPlugin.getLogger().info("正在关闭数据库连接...");
             Main.SQL_SESSIONS.openSession().close();
             Main.SQL_SESSIONS = null;
         }
@@ -45,11 +42,11 @@ public class FileConfigs {
     public boolean reloadSocket(){
         if (Main.socketClient != null){
             Main.socketClient.close();
-            plugin.getLogger().info("socket关闭完成！");
+            Main.mainPlugin.getLogger().info("socket关闭完成！");
             Main.socketClient = null;
         }
-        if(plugin.getConfig().getBoolean("online-talk.enable")){
-            plugin.getLogger().info("重新socket连接中...");
+        if(Main.mainPlugin.getConfig().getBoolean("online-talk.enable")){
+            Main.mainPlugin.getLogger().info("重新socket连接中...");
             Main.startSocket();
         }
         return true;
@@ -58,10 +55,10 @@ public class FileConfigs {
         if(Main.redisValue != null){
             Main.redisValue.close();
             Main.redisValue = null;
-            plugin.getLogger().info("redis关闭完成！");
+            Main.mainPlugin.getLogger().info("redis关闭完成！");
         }
-        if(plugin.getConfig().getBoolean("redis.enable")){
-            plugin.getLogger().info("重启redis连接中...");
+        if(Main.mainPlugin.getConfig().getBoolean("redis.enable")){
+            Main.mainPlugin.getLogger().info("重启redis连接中...");
             Main.startRedis();
         }
         return true;

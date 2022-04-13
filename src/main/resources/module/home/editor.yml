@@ -1,6 +1,8 @@
 menu-settings:
   name: '家编辑'
   auto-refresh: 1
+home-nbt:
+  name-space: 'home-function-nbt'
 mask:
   material: GRAY_STAINED_GLASS_PANE
   slot: [0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44,45,46,47,49,51,52,53]
@@ -50,3 +52,15 @@ function:
     name: '&f返回'
     lore:
       - '&5点击返回上一级菜单'
+saving:
+  type: SAVING
+  material: POTION
+  name: '&e保存中...'
+  lore:
+    - '§正在写入数据库...'
+saved:
+  type: SAVED
+  material: light_blue_concrete
+  name: '&a保存成功！'
+  lore:
+    - '§a已成功保存你的设置！'

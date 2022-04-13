@@ -26,7 +26,7 @@ import redis.clients.jedis.Jedis;
 
 public final class Main extends JavaPlugin {
 
-    public static JavaPlugin mainPlugin;
+    public static JavaPlugin mainPlugin = null;
     public static SqlSessionFactory SQL_SESSIONS = null;
     public static SocketClient socketClient = null;
     public static Jedis redisValue = null;
@@ -35,12 +35,13 @@ public final class Main extends JavaPlugin {
     @Override
     public void onLoad(){
         saveDefaultConfig();
-        new FileConfigs(this).checkFiles();
     }
 
     @Override
     public void onEnable() {
         mainPlugin = this;
+        getLogger().info("加载配置文件");
+        new FileConfigs().checkFiles();
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new PlayerPI().register();
         }
@@ -73,6 +74,8 @@ public final class Main extends JavaPlugin {
             redisValue.close();
             redisValue = null;
         }
+        getLogger().info("关闭所有任务");
+        getServer().getScheduler().cancelTasks(this);
     }
     private void registerCommands(){
         getServer().getPluginCommand("versailles").setExecutor(new ReloadCommand());
@@ -127,6 +130,7 @@ public final class Main extends JavaPlugin {
             } else {
                 mainPlugin.getLogger().warning("redis初始化连接失败！！！！");
             }
+
         }
     }
 }

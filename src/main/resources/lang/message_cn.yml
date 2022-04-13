@@ -50,6 +50,11 @@ sethome:
   not-player: '&a这个指令只能在游戏里使用！'
   had: '&a已经有个相同ID的家了！'
   success: '&a成功设置了一个家，id为 '
+editor-home:
+  timeout: '&c编辑超时，会话过期，请重新编辑！'
+  save-fail: '&c保存失败！会话超时，请重新编辑！'
+  tips-home-title-name: '&a请输入新的家名称...'
+  tips-home-subtitle-name: '&7支持中文，长度小8'
 back:
   not-player: '&a这个指令只能在游戏里使用！'
   death: '&a输入/back 返回死亡地点！'

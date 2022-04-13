@@ -35,7 +35,7 @@ public class ReloadCommand implements TabExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("reload.vacancy")));
                 return true;
             }
-            FileConfigs fileConfigs = new FileConfigs(Main.mainPlugin);
+            FileConfigs fileConfigs = new FileConfigs();
             switch (args[1]){
                 case "all":
                     Main.mainPlugin.saveDefaultConfig();

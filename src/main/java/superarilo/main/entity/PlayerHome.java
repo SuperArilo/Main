@@ -43,10 +43,6 @@ public class PlayerHome {
         this.playerUUID = playerUUID;
     }
 
-    public void setLocationZ(int locationZ) {
-        this.locationZ = locationZ;
-    }
-
     public String getWorld() {
         return world;
     }
