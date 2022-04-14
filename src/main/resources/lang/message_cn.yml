@@ -49,12 +49,21 @@ home:
 sethome:
   not-player: '&a这个指令只能在游戏里使用！'
   had: '&a已经有个相同ID的家了！'
+  illegal: '&c非法字符，请重新输入！'
   success: '&a成功设置了一个家，id为 '
+  not-item: '&c设置失败！你必须站在可站立的位置上！'
 editor-home:
   timeout: '&c编辑超时，会话过期，请重新编辑！'
   save-fail: '&c保存失败！会话超时，请重新编辑！'
   tips-home-title-name: '&a请输入新的家名称...'
   tips-home-subtitle-name: '&7支持中文，长度小8'
+  wrongful-name: '&c输入的内容不合法！'
+  name-to-long: '&c输入的字符超过长度8'
+delete-home:
+  not-player: '&a这个指令只能在游戏里使用！'
+  no-have: '&c选中的家不存在！'
+  success: '&a成功删除选中的家！'
+  error: '&c删除错误！已经回滚操作。如果持续存在，请联系管理员！'
 back:
   not-player: '&a这个指令只能在游戏里使用！'
   death: '&a输入/back 返回死亡地点！'

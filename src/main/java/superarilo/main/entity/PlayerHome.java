@@ -1,10 +1,13 @@
 package superarilo.main.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("mc_home_list")
 public class PlayerHome {
+    @TableId(value = "id")
+    private int id;
     private String homeId;
     private String homeName;
     @TableField(value = "player_uuid")
@@ -113,5 +116,13 @@ public class PlayerHome {
 
     public void setVectorZ(double vectorZ) {
         this.vectorZ = vectorZ;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

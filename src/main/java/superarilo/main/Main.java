@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
 import superarilo.main.command.back.BackCommand;
+import superarilo.main.command.home.DeleteHomeCommand;
 import superarilo.main.command.home.HomeCommand;
 import superarilo.main.command.home.SetHomeCommand;
 import superarilo.main.command.tpa.*;
@@ -88,6 +89,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("home").setExecutor(new HomeCommand());
         getServer().getPluginCommand("back").setExecutor(new BackCommand());
         getServer().getPluginCommand("sethome").setExecutor(new SetHomeCommand());
+        getServer().getPluginCommand("delhome").setExecutor(new DeleteHomeCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);

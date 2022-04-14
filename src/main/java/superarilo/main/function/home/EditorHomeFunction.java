@@ -1,4 +1,4 @@
-package superarilo.main.function;
+package superarilo.main.function.home;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,12 +20,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
+import superarilo.main.function.CreatePlayerTitle;
+import superarilo.main.function.FileConfigs;
 import superarilo.main.gui.home.ShowHomeList;
 import superarilo.main.mapper.PlayerHomeFunction;
 
 import java.text.DecimalFormat;
 
-public class HomeFunction {
+public class EditorHomeFunction {
 
     private final Player player;
     private final FunctionType functionType;
@@ -39,7 +41,7 @@ public class HomeFunction {
     private final FileConfiguration messageCfg = FileConfigs.fileConfigs.get("message");
 
     //修改图标
-    public HomeFunction(Player player, FunctionType functionType, Inventory inventory, ItemStack changeItem, ItemStack cursorItem, int slot){
+    public EditorHomeFunction(Player player, FunctionType functionType, Inventory inventory, ItemStack changeItem, ItemStack cursorItem, int slot){
         this.player = player;
         this.functionType = functionType;
         this.inventory = inventory;
@@ -68,8 +70,8 @@ public class HomeFunction {
                 break;
             case CHANGENAME: {
                 this.inventory.close();
-                new CreatePlayerTitle(this.player, messageCfg.getString("editor-home.tips-home-title-name"), messageCfg.getString("editor-home.tips-home-subtitle-name"),10,80,20).sendToPlayer();
-                Main.redisValue.sadd("editor_home_name_player_list", player.getUniqueId().toString());
+                new CreatePlayerTitle(this.player, messageCfg.getString("editor-home.tips-home-title-name"), messageCfg.getString("editor-home.tips-home-subtitle-name"),10,200,20).sendToPlayer();
+                Main.redisValue.sadd("editor_home_player_now", player.getUniqueId().toString());
             }
                 break;
             case CHANGEPOSITION: {
@@ -104,7 +106,15 @@ public class HomeFunction {
             }
                 return;
             case DELETE: {
-
+                PlayerHome playerHome = getEditorHomeToRedis(player);
+                if (playerHome != null) {
+                    Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
+                        new HomeFunction(this.player, playerHome.getHomeId()).deleteHome();
+                    });
+                    this.player.closeInventory();
+                } else {
+                    this.player.sendMessage(PlaceholderAPI.setPlaceholders(this.player, Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.no-have")));
+                }
             }
                 break;
             case BACK: {
@@ -135,7 +145,7 @@ public class HomeFunction {
         Runnable runnable = () -> {
             SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
             try {
-                sqlSession.getMapper(PlayerHomeFunction.class).update(playerHome, new QueryWrapper<PlayerHome>().eq("home_id",playerHome.getHomeId()));
+                sqlSession.getMapper(PlayerHomeFunction.class).update(playerHome, new QueryWrapper<PlayerHome>().eq("id",playerHome.getId()));
                 setSavedItemStack();
             } catch (Exception exception) {
                 sqlSession.rollback();

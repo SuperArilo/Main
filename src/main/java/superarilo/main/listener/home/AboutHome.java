@@ -17,7 +17,8 @@ import org.bukkit.util.Vector;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.HomeFunction;
+import superarilo.main.function.home.EditorHomeFunction;
+import superarilo.main.function.MatchHomeId;
 import superarilo.main.function.TeleporThread;
 import superarilo.main.gui.home.HomeEditor;
 
@@ -26,27 +27,25 @@ public class AboutHome implements Listener {
 
     @EventHandler
     public void homeClickFunction(InventoryClickEvent event){
-        InventoryView homeInv = event.getWhoClicked().getOpenInventory();
+        Player player = (Player) event.getWhoClicked();
+        InventoryView homeInv = player.getOpenInventory();
         if (homeInv.getTitle().equals(FileConfigs.fileConfigs.get("homelist").getString("menu-settings.name"))){
             event.setCancelled(true);
-            Inventory checkInv = event.getClickedInventory();
-            if (checkInv == null || checkInv.getType() == InventoryType.PLAYER) return;
-            Player player = (Player) event.getWhoClicked();
-            int clickIndex = event.getRawSlot();
-            if (event.getCurrentItem() == null) return;
+            ItemStack currentItem = event.getCurrentItem();
+            if (currentItem == null) return;
+            int clickIndex = event.getSlot();
             if (clickIndex > event.getInventory().getSize()) return;
-            PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId() + "_home"),PlayerHome.class).get(clickIndex);
-            if (playerHome == null) return;
-            if (event.getClick().equals(ClickType.LEFT)){
-                if (clickIndex <= 8){
-                    if (homeInv.getItem(clickIndex) == null) return;
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("home.teleporting")));
-                    homeInv.close();
-                    new TeleporThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleporThread.Type.POINT).teleport();
-                }
-            } else if (event.getClick().equals(ClickType.RIGHT)){
+            Integer inNBTSlot = currentItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.mainPlugin, FileConfigs.fileConfigs.get("homelist").getString("home-nbt.name-space", "null")), PersistentDataType.INTEGER);
+            if (inNBTSlot == null) return;
+            ClickType clickType = event.getClick();
+            PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId().toString() + "_home"), PlayerHome.class).get(inNBTSlot);
+            if (clickType.equals(ClickType.LEFT)){
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("home.teleporting")));
                 homeInv.close();
-                HomeFunction.setEditorHomeToRedis(player, playerHome);
+                new TeleporThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleporThread.Type.POINT).teleport();
+            } else if (clickType.equals(ClickType.RIGHT)){
+                homeInv.close();
+                EditorHomeFunction.setEditorHomeToRedis(player, playerHome);
                 new HomeEditor(player, playerHome).open();
             }
         }
@@ -64,7 +63,7 @@ public class AboutHome implements Listener {
                 if (currentItem == null) return;
                 String type = currentItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.mainPlugin, FileConfigs.fileConfigs.get("homeEditor").getString("home-nbt.name-space", "null")), PersistentDataType.STRING);
                 if (type != null){
-                    Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> new HomeFunction(player, HomeFunction.FunctionType.valueOf(type.toUpperCase()), editorInv, currentItem, event.getCursor(), event.getSlot()).startEditorHome());
+                    Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> new EditorHomeFunction(player, EditorHomeFunction.FunctionType.valueOf(type.toUpperCase()), editorInv, currentItem, event.getCursor(), event.getSlot()).startEditorHome());
                     return;
                 }
             } else if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || event.getAction() == InventoryAction.COLLECT_TO_CURSOR) {
@@ -84,6 +83,32 @@ public class AboutHome implements Listener {
 
     @EventHandler
     public void getPlayerMessage(AsyncPlayerChatEvent event){
+        Player player = event.getPlayer();
+        if (Main.redisValue.sismember("editor_home_player_now", player.getUniqueId().toString())){
+            event.setCancelled(true);
+            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> Main.mainPlugin.getServer().getPluginManager().callEvent(new EditorHomeName(player, event.getMessage())));
+        }
+    }
 
+    @EventHandler
+    public void getEditorToHomeName(EditorHomeName event){
+        String getMessage = event.getPlayerSendMessage();
+        Player player = event.getPlayer();
+        if (FileConfigs.fileConfigs.get("home").getInt("max-home-name-length") < getMessage.length()) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("editor-home.name-to-long")));
+        } else {
+            if (MatchHomeId.isChineseEnglishNumber(getMessage)){
+                PlayerHome playerHome = EditorHomeFunction.getEditorHomeToRedis(player);
+                playerHome.setHomeName(getMessage);
+                EditorHomeFunction.setEditorHomeToRedis(player, playerHome);
+                new HomeEditor(player, playerHome).open();
+            } else {
+                event.setCancelled(true);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("editor-home.wrongful-name")));
+            }
+        }
+        Main.redisValue.srem("editor_home_player_now", player.getUniqueId().toString());
+        player.resetTitle();
     }
 }

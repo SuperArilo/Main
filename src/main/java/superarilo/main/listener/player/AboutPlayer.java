@@ -1,14 +1,13 @@
 package superarilo.main.listener.player;
 
-import com.alibaba.fastjson.JSONObject;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import superarilo.main.Main;
@@ -48,6 +47,10 @@ public class AboutPlayer implements Listener {
         }
     }
 
+    @EventHandler
+    public void whenPlayerExit(PlayerQuitEvent event){
+        Main.redisValue.srem("editor_home_player_now", event.getPlayer().getUniqueId().toString());
+    }
 //    @EventHandler
 //    public void getPlayerMessage(AsyncPlayerChatEvent event){
 //        if(Main.mainPlugin.getConfig().getBoolean("online-talk.enable")){

@@ -39,8 +39,4 @@ public class EditorHomeName extends PlayerEvent implements Cancellable {
     public String getPlayerSendMessage(){
         return this.message;
     }
-
-    public Player getSender(){
-        return getPlayer();
-    }
 }

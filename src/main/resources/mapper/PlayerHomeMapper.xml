@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="superarilo.main.mapper.PlayerHomeFunction">
     <select id="checkIsHaveHome" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(*) from mc_home_list where home_name = #{home_name} and player_uuid = #{uuid}
+        select count(*) from mc_home_list where home_id = #{home_id} and player_uuid = #{uuid}
     </select>
+    <delete id="deletePlayerHomeById" parameterType="java.lang.String">
+        delete from mc_home_list where home_id = #{home_id} and player_uuid = #{uuid}
+    </delete>
 </mapper>

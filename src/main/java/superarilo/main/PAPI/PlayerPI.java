@@ -23,6 +23,9 @@ public class PlayerPI extends PlaceholderExpansion {
         return "1.0";
     }
     public String onPlaceholderRequest(Player player, String identifier){
+        if(identifier.equalsIgnoreCase("player_name")){
+            return player.getName();
+        }
         if(identifier.equalsIgnoreCase("tpa_sender")){
             return player.getName();
         }

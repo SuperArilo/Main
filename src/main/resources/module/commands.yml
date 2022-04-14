@@ -38,6 +38,10 @@ sethome:
   show: 'sethome'
   describe: '打开你保存的家列表或者传送到指定家位置'
   usage: '&a使用方法: /sethome  + <家>'
+delhome:
+  show: 'delhome'
+  describe: '删除指定id名称的家'
+  usage: '&a使用方法: /delhome  + <家ID>'
 back:
   show: 'back'
   describe: '返回上一个传送地点'

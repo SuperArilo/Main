@@ -1,21 +1,15 @@
 package superarilo.main.command.home;
 
-import org.apache.ibatis.session.SqlSession;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
-import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.mapper.PlayerHomeFunction;
-
-import java.text.DecimalFormat;
+import superarilo.main.function.MatchHomeId;
+import superarilo.main.function.home.HomeFunction;
 
 public class SetHomeCommand implements CommandExecutor {
     @Override
@@ -23,38 +17,10 @@ public class SetHomeCommand implements CommandExecutor {
         if (commandSender instanceof Player){
             if (!s.equals("sethome")) return false;
             if (strings.length == 1){
-                String playerUUID = ((Player) commandSender).getUniqueId().toString();
-                PlayerHome playerHome = new PlayerHome();
-                playerHome.setHomeId(strings[0]);
-                playerHome.setHomeName(strings[0]);
-                playerHome.setPlayerUUID(playerUUID);
-                Location location = ((Player) commandSender).getLocation();
-                Vector vector = location.getDirection();
-                DecimalFormat decimal = new DecimalFormat("#.00");
-                playerHome.setLocationX(Double.parseDouble(decimal.format(location.getX())));
-                playerHome.setLocationY(Double.parseDouble(decimal.format(location.getY())));
-                playerHome.setLocationZ(Double.parseDouble(decimal.format(location.getZ())));
-                String blockName = location.getBlock().getRelative(BlockFace.DOWN).getType().name();
-                playerHome.setMaterial(blockName);
-                playerHome.setWorld(((Player) commandSender).getWorld().getName());
-                playerHome.setWorldAlias(Main.mvWorldManager.getMVWorld(((Player) commandSender).getWorld()).getAlias());
-                playerHome.setVectorX(Double.parseDouble(decimal.format(vector.getX())));
-                playerHome.setVectorY(Double.parseDouble(decimal.format(vector.getY())));
-                playerHome.setVectorZ(Double.parseDouble(decimal.format(vector.getZ())));
-                SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
-                try {
-                    if (sqlSession.getMapper(PlayerHomeFunction.class).checkIsHaveHome(strings[0], playerUUID) < 1){
-                        sqlSession.getMapper(PlayerHomeFunction.class).insert(playerHome);
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.success") + strings[0]));
-                        Main.redisValue.del(((Player) commandSender).getUniqueId() + "_home");
-                    } else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.had")));
-                    }
-                } catch (Exception exception){
-                    sqlSession.rollback();
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception));
-                } finally {
-                    sqlSession.close();
+                if (MatchHomeId.isEnglish(strings[0])) {
+                    Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> new HomeFunction(((Player) commandSender).getPlayer(), strings[0]).setNewHome());
+                } else {
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.illegal")));
                 }
                 return true;
             } else {
