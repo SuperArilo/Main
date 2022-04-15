@@ -149,7 +149,7 @@ public class EditorHomeFunction {
                 setSavedItemStack();
             } catch (Exception exception) {
                 sqlSession.rollback();
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getLocalizedMessage()));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getCause().getMessage()));
             } finally {
                 sqlSession.close();
                 Main.redisValue.del(player.getUniqueId() + "_home");

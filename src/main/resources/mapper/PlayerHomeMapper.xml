@@ -7,4 +7,7 @@
     <delete id="deletePlayerHomeById" parameterType="java.lang.String">
         delete from mc_home_list where home_id = #{home_id} and player_uuid = #{uuid}
     </delete>
+    <select id="getHomeQuantity" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from mc_home_list where player_uuid = #{uuid}
+    </select>
 </mapper>

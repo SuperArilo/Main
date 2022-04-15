@@ -53,6 +53,7 @@ public class TeleporThread {
 
     public void teleport() {
         final long[] timerIndex = {this.player.isOp() ? 1 : FileConfigs.fileConfigs.get("home").getLong("delay", 1) + 1};
+        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -63,7 +64,7 @@ public class TeleporThread {
                 }
                 if (hasMoved(threadPlayer) || hasLostHealth(threadPlayer)){
                     cancel();
-                    threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("break-teleport")));
+                    threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.break")));
                     return;
                 }
                 timerIndex[0] = timerIndex[0] - 1;
@@ -71,21 +72,26 @@ public class TeleporThread {
                     cancel();
                     String keyName = threadPlayer.getUniqueId() + "_back";
                     switch (getType()){
-                        case POINT:
+                        case POINT: {
                             threadPlayer.teleport(targetLocation);
-                            threadPlayer.playEffect(targetLocation, Effect.CLICK1, 1);
+                            threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation, keyName);
-                            break;
-                        case BACK:
+                            threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                        }
+                        break;
+                        case BACK: {
                             JSONObject jsonObject = getPlayerBackLocation(keyName);
                             Location backLocation = new Location(Main.mainPlugin.getServer().getWorld(jsonObject.getString("world")), jsonObject.getFloat("x"), jsonObject.getFloat("y"), jsonObject.getFloat("z"));
                             threadPlayer.teleport(backLocation);
-                            threadPlayer.playEffect(backLocation, Effect.CLICK1, 1);
+                            threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation,keyName);
-                            break;
-                        case PLAYER:
+                        }
+                        break;
+                        case PLAYER: {
                             threadPlayer.teleport(targetPlayer);
-                            break;
+                            threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                        }
+                        break;
                     }
                 }
             }
@@ -105,12 +111,7 @@ public class TeleporThread {
 
     public boolean hasMoved(Player p) {
         Location currentLocation = p.getLocation();
-        final double movementThreshold = 0.1;
-        double xDiff = makePositive(initialLocation.getX() - currentLocation.getX());
-        double yDiff = makePositive(initialLocation.getY() - currentLocation.getY());
-        double zDiff = makePositive(initialLocation.getZ() - currentLocation.getZ());
-        double totalDiff = xDiff + yDiff + zDiff;
-        return totalDiff > movementThreshold;
+        return makePositive(initialLocation.getX() - currentLocation.getX()) + makePositive(initialLocation.getY() - currentLocation.getY()) + makePositive(initialLocation.getZ() - currentLocation.getZ()) > 0.1;
     }
     public static void setPlayerBackLocation(Location location, String keyName){
         JSONObject jsonObject = new JSONObject();

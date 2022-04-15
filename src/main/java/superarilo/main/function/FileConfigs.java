@@ -33,7 +33,6 @@ public class FileConfigs {
     public boolean reloadSQL(){
         if(Main.SQL_SESSIONS != null){
             Main.mainPlugin.getLogger().info("正在关闭数据库连接...");
-            Main.SQL_SESSIONS.openSession().close();
             Main.SQL_SESSIONS = null;
         }
         Main.startSQL();

@@ -45,6 +45,7 @@ public final class Main extends JavaPlugin {
         new FileConfigs().checkFiles();
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new PlayerPI().register();
+
         }
         MultiverseCore core = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
         if (core != null){
@@ -72,8 +73,10 @@ public final class Main extends JavaPlugin {
         }
         //关闭redis链接
         if(getConfig().getBoolean("redis.enable")){
-            redisValue.close();
-            redisValue = null;
+            if (redisValue != null){
+                redisValue.close();
+                redisValue = null;
+            }
         }
         getLogger().info("关闭所有任务");
         getServer().getScheduler().cancelTasks(this);
@@ -85,7 +88,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
         getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
         getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
-        getServer().getPluginCommand("tpalist").setExecutor(new OpenGUI());
+        getServer().getPluginCommand("tpalist").setExecutor(new TpaList());
         getServer().getPluginCommand("home").setExecutor(new HomeCommand());
         getServer().getPluginCommand("back").setExecutor(new BackCommand());
         getServer().getPluginCommand("sethome").setExecutor(new SetHomeCommand());
@@ -132,7 +135,6 @@ public final class Main extends JavaPlugin {
             } else {
                 mainPlugin.getLogger().warning("redis初始化连接失败！！！！");
             }
-
         }
     }
 }

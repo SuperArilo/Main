@@ -7,6 +7,12 @@ home-nbt:
 mask:
   material: LIGHT_BLUE_STAINED_GLASS_PANE
   slot: [0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44]
+loading:
+  material: POTION
+  slot: 13
+  name: '&e读取中...'
+  lore:
+    - '§正在读取数据库...'
 player-head:
   material: player_head
   slot: 13

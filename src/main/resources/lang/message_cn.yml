@@ -1,3 +1,7 @@
+teleport:
+  teleporting: '&a传送过程中！请不要移动...'
+  success: '&a传送成功！'
+  break: '&c传送失败,请不要移动！'
 tpa:
   not-player: '&a这个指令只能在游戏里使用！'
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
@@ -9,7 +13,6 @@ tpaccept:
   no-have: '&a你当前没有任何的传送请求'
   unable-player: '&a该玩家&c离线&a或者&c不存在！'
   fail: '&c指令缺少集合或者输入不正确'
-  success: '&a传送成功！'
 tpahere:
   not-player: '&a这个指令只能在游戏里使用！'
   no-have: '&a你当前没有任何的传送请求'
@@ -41,17 +44,16 @@ reload:
   redis:
     success: '&aredis重启成功！'
     fail: '&credits重启失败，请检查控制台！'
-break-teleport: '&c传送失败,请不要移动！'
 home:
   no-have: '&a这个&c家&a不存在！'
   not-player: '&a这个指令只能在游戏里使用！'
-  teleporting: '&a传送过程中！请不要移动...'
 sethome:
   not-player: '&a这个指令只能在游戏里使用！'
-  had: '&a已经有个相同ID的家了！'
+  had: '&c创建失败，已经有个相同ID的家了！'
   illegal: '&c非法字符，请重新输入！'
   success: '&a成功设置了一个家，id为 '
   not-item: '&c设置失败！你必须站在可站立的位置上！'
+  max-number: '&c创建失败，以达到最多创建数量！'
 editor-home:
   timeout: '&c编辑超时，会话过期，请重新编辑！'
   save-fail: '&c保存失败！会话超时，请重新编辑！'
@@ -68,4 +70,4 @@ back:
   not-player: '&a这个指令只能在游戏里使用！'
   death: '&a输入/back 返回死亡地点！'
   no-back: '&a当前没有可返回的传送点！'
-  teleporting: '&a传送过程中！请不要移动...'
+

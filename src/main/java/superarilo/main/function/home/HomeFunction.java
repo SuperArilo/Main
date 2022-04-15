@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import superarilo.main.Main;
@@ -18,6 +19,7 @@ public class HomeFunction {
     private final Player player;
     private final String homeId;
     private PlayerHome playerHome = null;
+    private final FileConfiguration messageCfg = FileConfigs.fileConfigs.get("message");
     private final SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
 
     public HomeFunction (Player player, String homeId){
@@ -26,6 +28,22 @@ public class HomeFunction {
     }
 
     public void setNewHome(){
+        try {
+            if (this.sqlSession.getMapper(PlayerHomeFunction.class).getHomeQuantity(this.player.getUniqueId().toString()) >= FileConfigs.fileConfigs.get("home").getInt("homes-group.default")) {
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("sethome.max-number")));
+                sqlSession.close();
+                return;
+            }
+            if (this.sqlSession.getMapper(PlayerHomeFunction.class).checkIsHaveHome(this.homeId, this.player.getUniqueId().toString()) >= 1){
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("sethome.had")));
+                sqlSession.close();
+                return;
+            }
+        } catch (Exception exception) {
+            this.sqlSession.rollback();
+            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getMessage()));
+            sqlSession.close();
+        }
         String playerUUID = this.player.getUniqueId().toString();
         PlayerHome playerHome = new PlayerHome();
         playerHome.setHomeId(this.homeId);
@@ -39,7 +57,7 @@ public class HomeFunction {
         playerHome.setLocationZ(Double.parseDouble(decimal.format(location.getZ())));
         Material blockMaterial = location.getBlock().getRelative(BlockFace.DOWN).getType();
         if (!blockMaterial.isItem() || blockMaterial.isAir() || !blockMaterial.isBlock()) {
-            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.not-item")));
+            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("sethome.not-item")));
             return;
         }
         playerHome.setMaterial(blockMaterial.name());
@@ -56,17 +74,17 @@ public class HomeFunction {
         try {
             int checkNum =  sqlSession.getMapper(PlayerHomeFunction.class).deletePlayerHomeById(this.homeId, this.player.getUniqueId().toString());
             if (checkNum == 1) {
-                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("delete-home.success")));
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.success")));
             } else if (checkNum == 0) {
-                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("delete-home.no-have")));
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.no-have")));
             } else if (checkNum > 1) {
                 sqlSession.rollback();
-                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("delete-home.error")));
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.error")));
             }
 
         } catch (Exception exception){
             this.sqlSession.rollback();
-            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception.getMessage()));
+            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getCause().getMessage()));
         } finally {
             this.sqlSession.close();
             deleteHomeOnRedis(this.player);
@@ -76,15 +94,11 @@ public class HomeFunction {
     private void saveToDataBase(){
         Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
             try {
-                if (this.sqlSession.getMapper(PlayerHomeFunction.class).checkIsHaveHome(this.homeId, this.player.getUniqueId().toString()) < 1){
-                    this.sqlSession.getMapper(PlayerHomeFunction.class).insert(playerHome);
-                    this.player.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.success") + this.homeId));
-                } else {
-                    this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.had")));
-                }
+                this.sqlSession.getMapper(PlayerHomeFunction.class).insert(playerHome);
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("sethome.success") + this.homeId));
             } catch (Exception exception){
                 this.sqlSession.rollback();
-                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception.getMessage()));
+                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getMessage()));
             } finally {
                 this.sqlSession.close();
                 deleteHomeOnRedis(this.player);

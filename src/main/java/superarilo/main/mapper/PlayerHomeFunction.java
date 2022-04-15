@@ -11,4 +11,5 @@ public interface PlayerHomeFunction extends BaseMapper<PlayerHome> {
     @MapKey("home_id")
     Integer checkIsHaveHome(@Param("home_id") String homeId, @Param("uuid") String playerUUID);
     Integer deletePlayerHomeById(@Param("home_id") String homeId, @Param("uuid") String playerUUID);
+    Integer getHomeQuantity(@Param("uuid") String playerUUID);
 }

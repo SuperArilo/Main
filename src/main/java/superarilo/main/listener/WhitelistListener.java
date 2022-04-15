@@ -22,7 +22,7 @@ public class WhitelistListener implements Listener {
                 }
             } catch (Exception exception) {
                 sqlSession.rollback();
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text("§c初始化连接数据库异常，请尝试重新登陆服务器！"));
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text("§c初始化连接数据库异常，请尝试重新登陆服务器！") + exception.getCause().getMessage());
             } finally {
                 sqlSession.close();
             }

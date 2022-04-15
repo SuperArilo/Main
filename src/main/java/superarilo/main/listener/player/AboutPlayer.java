@@ -51,15 +51,4 @@ public class AboutPlayer implements Listener {
     public void whenPlayerExit(PlayerQuitEvent event){
         Main.redisValue.srem("editor_home_player_now", event.getPlayer().getUniqueId().toString());
     }
-//    @EventHandler
-//    public void getPlayerMessage(AsyncPlayerChatEvent event){
-//        if(Main.mainPlugin.getConfig().getBoolean("online-talk.enable")){
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("mcJavaId", event.getPlayer().getName());
-//            jsonObject.put("message", event.getMessage());
-//            jsonObject.put("type", "minecraft");
-//            jsonObject.put("mc_uuid", event.getPlayer().getUniqueId());
-//            Main.socketClient.send(jsonObject.toJSONString());
-//        }
-//    }
 }

@@ -10,19 +10,16 @@ import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.gui.tpa.ShowPlayerList;
 
-public class OpenGUI implements CommandExecutor {
+public class TpaList implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player){
-            if(s.equals("tpalist")){
-                if (strings.length == 0){
-                    new ShowPlayerList((Player) commandSender).open();
-                    return true;
-                } else {
-                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpalist.usage","使用方法")));
-                    return false;
-                }
+            if(!s.equals("tpalist")) return false;
+            if (strings.length == 0){
+                new ShowPlayerList((Player) commandSender).open();
+                return true;
             } else {
+                command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpalist.usage","使用方法")));
                 return false;
             }
         } else {

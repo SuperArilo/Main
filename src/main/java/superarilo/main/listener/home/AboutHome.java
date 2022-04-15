@@ -40,7 +40,6 @@ public class AboutHome implements Listener {
             ClickType clickType = event.getClick();
             PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId().toString() + "_home"), PlayerHome.class).get(inNBTSlot);
             if (clickType.equals(ClickType.LEFT)){
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("home.teleporting")));
                 homeInv.close();
                 new TeleporThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleporThread.Type.POINT).teleport();
             } else if (clickType.equals(ClickType.RIGHT)){

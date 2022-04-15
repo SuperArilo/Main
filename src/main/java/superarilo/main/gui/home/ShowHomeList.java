@@ -11,8 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
@@ -34,25 +37,43 @@ public class ShowHomeList {
     public void open(){
         this.player.openInventory(inventory);
         renderMasks();
-        renderOwnerHead();
         String keyName = this.player.getUniqueId() + "_home";
+        renderLoading();
         if (Main.redisValue.exists(keyName)){
             setPlayerHomeList(JSONObject.parseArray(Main.redisValue.get(keyName), PlayerHome.class));
+            renderHomeList();
+            renderOwnerHead();
         } else {
-            SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
-            try {
-                setPlayerHomeList(sqlSession.getMapper(PlayerFunction.class).getPlayerHome(this.player.getUniqueId().toString()));
-            } catch (Exception exception) {
-                sqlSession.rollback();
-                exception.printStackTrace();
-                this.inventory.close();
-                this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception.getMessage()));
-                return;
-            } finally {
-                sqlSession.close();
-            }
-            Main.redisValue.setex(keyName, 43200,JSONObject.toJSONString(getPlayerHomeList()));
+            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> getHomeByDataBase(keyName));
         }
+    }
+
+    private void renderMasks() {
+        for (int index : listCfg.getIntegerList("mask.slot")){
+            this.inventory.setItem(index, new ItemStack(Material.valueOf(listCfg.getString("mask.material", "Dirt").toUpperCase())));
+        }
+    }
+
+    private void renderLoading(){
+        ItemStack itemStack = new ItemStack(Material.valueOf(listCfg.getString("loading.material", "DIRT").toUpperCase()));
+        PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP,1,1), true);
+        potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', listCfg.getString("loading.name", "null")));
+        potionMeta.setLore(listCfg.getStringList("loading.lore"));
+        this.inventory.setItem(listCfg.getInt("loading.slot"), itemStack);
+    }
+
+    private void renderOwnerHead() {
+        ItemStack itemStack = new ItemStack(Material.valueOf(listCfg.getString("player-head.material", "DIRT").toUpperCase()));
+        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+        skullMeta.setDisplayName(PlaceholderAPI.setPlaceholders(this.player, listCfg.getString("player-head.name")));
+        skullMeta.setOwner(this.player.getName());
+        itemStack.setItemMeta(skullMeta);
+        this.inventory.setItem(listCfg.getInt("player-head.slot"), itemStack);
+    }
+
+    private void renderHomeList(){
+        if (this.playerHomeList == null) return;
         List<Integer> indexList = listCfg.getIntegerList("player-home.slot");
         for (int index = 0;index < playerHomeList.size();index++){
             PlayerHome playerHome = playerHomeList.get(index);
@@ -66,20 +87,21 @@ public class ShowHomeList {
             this.inventory.setItem(indexList.get(index), itemStack);
         }
     }
-
-    private void renderMasks() {
-        for (int index : listCfg.getIntegerList("mask.slot")){
-            this.inventory.setItem(index, new ItemStack(Material.valueOf(listCfg.getString("mask.material", "Dirt").toUpperCase())));
+    private void getHomeByDataBase(String keyName){
+        SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
+        try {
+            setPlayerHomeList(sqlSession.getMapper(PlayerFunction.class).getPlayerHome(this.player.getUniqueId().toString()));
+            Main.redisValue.setex(keyName, 43200,JSONObject.toJSONString(getPlayerHomeList()));
+        } catch (Exception exception) {
+            sqlSession.rollback();
+            exception.printStackTrace();
+            this.inventory.close();
+            this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception.getCause().getMessage()));
+        } finally {
+            sqlSession.close();
         }
-    }
-
-    private void renderOwnerHead() {
-        ItemStack itemStack = new ItemStack(Material.valueOf(listCfg.getString("player-head.material", "DIRT").toUpperCase()));
-        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-        skullMeta.setDisplayName(PlaceholderAPI.setPlaceholders(this.player, listCfg.getString("player-head.name")));
-        skullMeta.setOwner(this.player.getName());
-        itemStack.setItemMeta(skullMeta);
-        this.inventory.setItem(listCfg.getInt("player-head.slot"), itemStack);
+        renderOwnerHead();
+        renderHomeList();
     }
 
     public List<PlayerHome> getPlayerHomeList() {

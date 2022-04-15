@@ -20,25 +20,20 @@ public class TpaCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
-            if ("tpa".equals(s)) {
-                if (strings.length == 1) {
-                    Player bePlayer = Main.mainPlugin.getServer().getPlayer(strings[0]);
-                    if (bePlayer != null && !bePlayer.getName().equals(commandSender.getName())) {
-                        commandSender.sendMessage(PlaceholderAPI.setPlaceholders(bePlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.send-message")));
-                        bePlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.get-message")));
-                        bePlayer.sendMessage(new SendFunctionMessage(net.md_5.bungee.api.ChatColor.GREEN,"[同意]", ClickEvent.Action.RUN_COMMAND,"/tpaccept " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("豪爽同意"),true).getFunctionText(),new TextComponent(" 或者 "),new SendFunctionMessage(net.md_5.bungee.api.ChatColor.RED,"[拒绝]", ClickEvent.Action.RUN_COMMAND,"/tparefuse " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝"),true).getFunctionText());
-                        String keyName = ((Player) commandSender).getUniqueId() + "_tpa_" + bePlayer.getUniqueId();
-                        Main.redisValue.set(keyName,commandSender.getName());
-                        Main.redisValue.expire(keyName,15);
-                    } else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.unable-player")));
-                    }
-                    return true;
+            if (!s.equals("tpa")) return false;
+            if (strings.length == 1) {
+                Player bePlayer = Main.mainPlugin.getServer().getPlayer(strings[0]);
+                if (bePlayer != null && !bePlayer.getName().equals(commandSender.getName())) {
+                    commandSender.sendMessage(PlaceholderAPI.setPlaceholders(bePlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.send-message")));
+                    bePlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.get-message")));
+                    bePlayer.sendMessage(new SendFunctionMessage(net.md_5.bungee.api.ChatColor.GREEN,"[同意]", ClickEvent.Action.RUN_COMMAND,"/tpaccept " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("豪爽同意"),true).getFunctionText(),new TextComponent(" 或者 "),new SendFunctionMessage(net.md_5.bungee.api.ChatColor.RED,"[拒绝]", ClickEvent.Action.RUN_COMMAND,"/tparefuse " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝"),true).getFunctionText());
+                    Main.redisValue.setex(((Player) commandSender).getUniqueId() + "_tpa_" + bePlayer.getUniqueId(), 15, commandSender.getName());
                 } else {
-                    command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpa.usage")));
-                    return false;
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpa.unable-player")));
                 }
+                return true;
             } else {
+                command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("tpa.usage")));
                 return false;
             }
         } else {
