@@ -14,20 +14,17 @@ public class BackCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player){
-            if (s.equals("back")){
-                if (strings.length == 0){
-                    if (Main.redisValue.exists(((Player) commandSender).getUniqueId() + "_back")) {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.teleporting")));
-                        new TeleporThread((Player) commandSender, TeleporThread.Type.BACK).teleport();
-                    } else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.no-back")));
-                    }
-                    return true;
+            if (!s.equals("back")) return false;
+            if (strings.length == 0){
+                if (Main.redisValue.exists(((Player) commandSender).getUniqueId() + "_back")) {
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
+                    new TeleporThread((Player) commandSender, TeleporThread.Type.BACK).teleport();
                 } else {
-                    command.setUsage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("back.usage")));
-                    return false;
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.no-back")));
                 }
+                return true;
             } else {
+                command.setUsage(ChatColor.translateAlternateColorCodes('&',Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("back.usage")));
                 return false;
             }
         } else {

@@ -7,11 +7,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.GetPlayerInfo;
 import superarilo.main.function.TeleporThread;
 
 @SuppressWarnings("ALL")
@@ -51,4 +53,5 @@ public class AboutPlayer implements Listener {
     public void whenPlayerExit(PlayerQuitEvent event){
         Main.redisValue.srem("editor_home_player_now", event.getPlayer().getUniqueId().toString());
     }
+
 }

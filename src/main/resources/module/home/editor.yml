@@ -40,7 +40,7 @@ function:
       - '&c此操作不可逆'
   home-save:
     type: SAVE
-    material: lime_concrete
+    material: light_blue_concrete
     slot: 48
     name: '&a保存'
     lore:
@@ -60,7 +60,7 @@ saving:
     - '§正在写入数据库...'
 saved:
   type: SAVED
-  material: light_blue_concrete
+  material: lime_concrete
   name: '&a保存成功！'
   lore:
     - '§a已成功保存你的设置！'

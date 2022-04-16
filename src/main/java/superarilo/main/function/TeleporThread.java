@@ -73,7 +73,7 @@ public class TeleporThread {
                     String keyName = threadPlayer.getUniqueId() + "_back";
                     switch (getType()){
                         case POINT: {
-                            threadPlayer.teleport(targetLocation);
+                            threadPlayer.teleportAsync(targetLocation);
                             threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation, keyName);
                             threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.success")));
@@ -82,8 +82,8 @@ public class TeleporThread {
                         case BACK: {
                             JSONObject jsonObject = getPlayerBackLocation(keyName);
                             Location backLocation = new Location(Main.mainPlugin.getServer().getWorld(jsonObject.getString("world")), jsonObject.getFloat("x"), jsonObject.getFloat("y"), jsonObject.getFloat("z"));
-                            threadPlayer.teleport(backLocation);
-                            threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
+                            threadPlayer.teleportAsync(backLocation);
+                            threadPlayer.playEffect(backLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation,keyName);
                         }
                         break;

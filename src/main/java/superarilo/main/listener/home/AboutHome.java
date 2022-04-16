@@ -62,7 +62,7 @@ public class AboutHome implements Listener {
                 if (currentItem == null) return;
                 String type = currentItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.mainPlugin, FileConfigs.fileConfigs.get("homeEditor").getString("home-nbt.name-space", "null")), PersistentDataType.STRING);
                 if (type != null){
-                    Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> new EditorHomeFunction(player, EditorHomeFunction.FunctionType.valueOf(type.toUpperCase()), editorInv, currentItem, event.getCursor(), event.getSlot()).startEditorHome());
+                    new EditorHomeFunction(player, EditorHomeFunction.FunctionType.valueOf(type.toUpperCase()), editorInv, currentItem, event.getCursor(), event.getSlot()).startEditorHome();
                     return;
                 }
             } else if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || event.getAction() == InventoryAction.COLLECT_TO_CURSOR) {

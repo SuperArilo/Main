@@ -28,6 +28,7 @@ public class ShowHomeList {
     private final Player player;
     private final Inventory inventory;
     private List<PlayerHome> playerHomeList = null;
+    private final SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
     private final FileConfiguration listCfg = FileConfigs.fileConfigs.get("homelist");
 
     public ShowHomeList(Player player) {
@@ -38,13 +39,13 @@ public class ShowHomeList {
         this.player.openInventory(inventory);
         renderMasks();
         String keyName = this.player.getUniqueId() + "_home";
-        renderLoading();
         if (Main.redisValue.exists(keyName)){
             setPlayerHomeList(JSONObject.parseArray(Main.redisValue.get(keyName), PlayerHome.class));
             renderHomeList();
             renderOwnerHead();
         } else {
-            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> getHomeByDataBase(keyName));
+            renderLoading();
+            Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> getHomeByDataBase(keyName));
         }
     }
 
@@ -60,6 +61,7 @@ public class ShowHomeList {
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP,1,1), true);
         potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', listCfg.getString("loading.name", "null")));
         potionMeta.setLore(listCfg.getStringList("loading.lore"));
+        itemStack.setItemMeta(potionMeta);
         this.inventory.setItem(listCfg.getInt("loading.slot"), itemStack);
     }
 
@@ -88,15 +90,15 @@ public class ShowHomeList {
         }
     }
     private void getHomeByDataBase(String keyName){
-        SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
         try {
             setPlayerHomeList(sqlSession.getMapper(PlayerFunction.class).getPlayerHome(this.player.getUniqueId().toString()));
             Main.redisValue.setex(keyName, 43200,JSONObject.toJSONString(getPlayerHomeList()));
         } catch (Exception exception) {
             sqlSession.rollback();
             exception.printStackTrace();
-            this.inventory.close();
             this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("SQL.fail") + exception.getCause().getMessage()));
+            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, this.inventory::close);
+            return;
         } finally {
             sqlSession.close();
         }

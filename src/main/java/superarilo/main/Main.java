@@ -3,9 +3,11 @@ package superarilo.main;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import net.luckperms.api.LuckPerms;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.PAPI.PlayerPI;
 import superarilo.main.command.back.BackCommand;
@@ -32,6 +34,7 @@ public final class Main extends JavaPlugin {
     public static SocketClient socketClient = null;
     public static Jedis redisValue = null;
     public static MVWorldManager mvWorldManager = null;
+    public static LuckPerms luckPerms = null;
 
     @Override
     public void onLoad(){
@@ -46,6 +49,13 @@ public final class Main extends JavaPlugin {
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new PlayerPI().register();
 
+        }
+        RegisteredServiceProvider<LuckPerms> provider = getServer().getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            luckPerms = provider.getProvider();
+
+        } else {
+            getLogger().warning("权限插件加载失败！");
         }
         MultiverseCore core = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
         if (core != null){

@@ -2,7 +2,6 @@ package superarilo.main.function;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import superarilo.main.Main;
 import java.io.File;
 import java.util.HashMap;
@@ -52,9 +51,14 @@ public class FileConfigs {
     }
     public boolean reloadRedis(){
         if(Main.redisValue != null){
-            Main.redisValue.close();
-            Main.redisValue = null;
-            Main.mainPlugin.getLogger().info("redis关闭完成！");
+            try {
+                Main.redisValue.close();
+            } catch (Exception exception) {
+                Main.mainPlugin.getLogger().info("redis关闭出错！" + exception.getCause().getMessage());
+            } finally {
+                Main.redisValue = null;
+                Main.mainPlugin.getLogger().info("redis关闭完成！");
+            }
         }
         if(Main.mainPlugin.getConfig().getBoolean("redis.enable")){
             Main.mainPlugin.getLogger().info("重启redis连接中...");

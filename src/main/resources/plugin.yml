@@ -1,7 +1,7 @@
 name: Main
 version: '${project.version}'
 main: superarilo.main.Main
-depend: ['Multiverse-Core']
+depend: ['Multiverse-Core', 'LuckPerms']
 softdepend: ['PlaceholderAPI']
 api-version: 1.18
 commands:

@@ -11,6 +11,7 @@ import org.bukkit.util.Vector;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.GetPlayerInfo;
 import superarilo.main.mapper.PlayerHomeFunction;
 import java.text.DecimalFormat;
 
@@ -29,7 +30,7 @@ public class HomeFunction {
 
     public void setNewHome(){
         try {
-            if (this.sqlSession.getMapper(PlayerHomeFunction.class).getHomeQuantity(this.player.getUniqueId().toString()) >= FileConfigs.fileConfigs.get("home").getInt("homes-group.default")) {
+            if (this.sqlSession.getMapper(PlayerHomeFunction.class).getHomeQuantity(this.player.getUniqueId().toString()) >= FileConfigs.fileConfigs.get("home").getInt("homes-group." + new GetPlayerInfo(this.player).getPlayerGroupName(), 3)) {
                 this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("sethome.max-number")));
                 sqlSession.close();
                 return;
@@ -87,8 +88,8 @@ public class HomeFunction {
             this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getCause().getMessage()));
         } finally {
             this.sqlSession.close();
-            deleteHomeOnRedis(this.player);
         }
+        deleteHomeOnRedis(this.player);
     }
 
     private void saveToDataBase(){
@@ -101,8 +102,8 @@ public class HomeFunction {
                 this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getMessage()));
             } finally {
                 this.sqlSession.close();
-                deleteHomeOnRedis(this.player);
             }
+            deleteHomeOnRedis(this.player);
         });
     }
 

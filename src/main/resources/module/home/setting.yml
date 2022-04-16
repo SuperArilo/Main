@@ -1,6 +1,7 @@
 homes-group:
   default: 7
-  admin: 9
+  admin: 14
+  builder: 14
 delay: 3
 max-home-name-length: 8
 disable-world:

@@ -108,9 +108,7 @@ public class EditorHomeFunction {
             case DELETE: {
                 PlayerHome playerHome = getEditorHomeToRedis(player);
                 if (playerHome != null) {
-                    Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
-                        new HomeFunction(this.player, playerHome.getHomeId()).deleteHome();
-                    });
+                    Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> new HomeFunction(this.player, playerHome.getHomeId()).deleteHome());
                     this.player.closeInventory();
                 } else {
                     this.player.sendMessage(PlaceholderAPI.setPlaceholders(this.player, Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.no-have")));
@@ -142,7 +140,7 @@ public class EditorHomeFunction {
             Main.redisValue.del(player.getUniqueId() + "_home");
             return;
         }
-        Runnable runnable = () -> {
+        Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
             SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
             try {
                 sqlSession.getMapper(PlayerHomeFunction.class).update(playerHome, new QueryWrapper<PlayerHome>().eq("id",playerHome.getId()));
@@ -154,8 +152,7 @@ public class EditorHomeFunction {
                 sqlSession.close();
                 Main.redisValue.del(player.getUniqueId() + "_home");
             }
-        };
-        Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, runnable);
+        });
     }
 
     private void setSavingItemStack(){
