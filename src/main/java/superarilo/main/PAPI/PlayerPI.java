@@ -2,7 +2,6 @@ package superarilo.main.PAPI;
 
 import com.alibaba.fastjson.JSONObject;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;

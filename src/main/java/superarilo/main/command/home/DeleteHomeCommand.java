@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.home.HomeFunction;
+import superarilo.main.function.home.Impl.HomeManagerImpl;
 
 public class DeleteHomeCommand implements CommandExecutor {
     @Override
@@ -16,7 +16,7 @@ public class DeleteHomeCommand implements CommandExecutor {
         if (commandSender instanceof Player){
             if (!s.equals("delhome")) return false;
             if (strings.length == 1){
-                Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> new HomeFunction(((Player) commandSender).getPlayer(), strings[0]).deleteHome());
+                new HomeManagerImpl(((Player) commandSender).getPlayer()).deleteHome(strings[0]);
                 return true;
             } else {
                 command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("delhome.usage")));

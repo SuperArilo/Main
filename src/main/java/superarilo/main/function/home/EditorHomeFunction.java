@@ -1,11 +1,9 @@
 package superarilo.main.function.home;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.ibatis.session.SqlSession;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,16 +15,15 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.CreatePlayerTitle;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.home.Impl.HomeManagerImpl;
 import superarilo.main.gui.home.ShowHomeList;
 import superarilo.main.mapper.PlayerHomeFunction;
 
-import java.text.DecimalFormat;
-
+@SuppressWarnings("deprecation")
 public class EditorHomeFunction {
 
     private final Player player;
@@ -35,6 +32,7 @@ public class EditorHomeFunction {
     private final ItemStack changeItem;
     private final ItemStack cursorItem;
     private final int changeItemSlot;
+    private final HomeManagerImpl homeManager;
 
     //配置文件
     private final FileConfiguration homeEditorCfg = FileConfigs.fileConfigs.get("homeEditor");
@@ -48,6 +46,7 @@ public class EditorHomeFunction {
         this.changeItem = changeItem;
         this.cursorItem = cursorItem;
         this.changeItemSlot = slot;
+        this.homeManager = new HomeManagerImpl(player);
     }
 
     public void startEditorHome(){
@@ -58,39 +57,23 @@ public class EditorHomeFunction {
                 Material cursorMaterial = this.cursorItem.getType();
                 this.changeItem.setType(cursorMaterial);
                 this.inventory.setItem(this.changeItemSlot, this.changeItem);
-                PlayerHome playerHome = getEditorHomeToRedis(player);
-                if (playerHome == null) {
+                if (!this.homeManager.modifyHomeIcon(cursorMaterial)) {
                     this.inventory.close();
-                    this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("editor-home.timeout")));
-                    break;
+                    return;
                 }
-                playerHome.setMaterial(cursorMaterial.name());
-                setEditorHomeToRedis(player, playerHome);
             }
                 break;
             case CHANGENAME: {
                 this.inventory.close();
                 new CreatePlayerTitle(this.player, messageCfg.getString("editor-home.tips-home-title-name"), messageCfg.getString("editor-home.tips-home-subtitle-name"),10,200,20).sendToPlayer();
-                Main.redisValue.sadd("editor_home_player_now", player.getUniqueId().toString());
+                this.homeManager.setNowEditorHomePlayer();
             }
                 break;
             case CHANGEPOSITION: {
-                PlayerHome playerHome = getEditorHomeToRedis(player);
-                if (playerHome == null) {
+                if (!this.homeManager.modifyLocation(this.player.getLocation())) {
                     this.inventory.close();
-                    this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("editor-home.timeout")));
-                    break;
+                    return;
                 }
-                DecimalFormat decimal = new DecimalFormat("#.00");
-                Location locationNew = this.player.getLocation();
-                Vector vectorNew = locationNew.getDirection();
-                playerHome.setVectorX(Double.parseDouble(decimal.format(vectorNew.getX())));
-                playerHome.setVectorY(Double.parseDouble(decimal.format(vectorNew.getY())));
-                playerHome.setVectorZ(Double.parseDouble(decimal.format(vectorNew.getZ())));
-                playerHome.setLocationX(Double.parseDouble(decimal.format(locationNew.getX())));
-                playerHome.setLocationY(Double.parseDouble(decimal.format(locationNew.getY())));
-                playerHome.setLocationZ(Double.parseDouble(decimal.format(locationNew.getZ())));
-                setEditorHomeToRedis(player, playerHome);
                 ItemMeta itemMeta = this.changeItem.getItemMeta();
                 itemMeta.setLore(PlaceholderAPI.setPlaceholders(this.player, homeEditorCfg.getStringList("function.home-position.lore")));
                 this.changeItem.setItemMeta(itemMeta);
@@ -106,13 +89,14 @@ public class EditorHomeFunction {
             }
                 return;
             case DELETE: {
-                PlayerHome playerHome = getEditorHomeToRedis(player);
+                PlayerHome playerHome = homeManager.getEditorTempHomeOnRedis();
                 if (playerHome != null) {
-                    Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> new HomeFunction(this.player, playerHome.getHomeId()).deleteHome());
+                    this.homeManager.deleteHome(playerHome.getHomeId());
                     this.player.closeInventory();
                 } else {
                     this.player.sendMessage(PlaceholderAPI.setPlaceholders(this.player, Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("delete-home.no-have")));
                 }
+                homeManager.deleteHomeOnRedis();
             }
                 break;
             case BACK: {
@@ -123,21 +107,13 @@ public class EditorHomeFunction {
         }
     }
 
-    public static void setEditorHomeToRedis(Player player, PlayerHome playerHome) {
-        Main.redisValue.setex(player.getUniqueId() + "_editor_home", 1800, JSONObject.toJSONString(playerHome));
-    }
-    public static PlayerHome getEditorHomeToRedis(Player player){
-        String playerHomeJson = Main.redisValue.get(player.getUniqueId() + "_editor_home");
-        return playerHomeJson != null ? JSONObject.parseObject(playerHomeJson, PlayerHome.class) : null;
-    }
-
     private void saveToDataBase(Player player){
         setSavingItemStack();
-        PlayerHome playerHome = getEditorHomeToRedis(player);
+        PlayerHome playerHome = homeManager.getEditorTempHomeOnRedis();
         if (playerHome == null) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("editor-home.save-fail")));
             this.inventory.close();
-            Main.redisValue.del(player.getUniqueId() + "_home");
+            homeManager.deleteHomeOnRedis();
             return;
         }
         Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
@@ -150,7 +126,7 @@ public class EditorHomeFunction {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + messageCfg.getString("SQL.fail") + exception.getCause().getMessage()));
             } finally {
                 sqlSession.close();
-                Main.redisValue.del(player.getUniqueId() + "_home");
+                homeManager.deleteHomeOnRedis();
             }
         });
     }

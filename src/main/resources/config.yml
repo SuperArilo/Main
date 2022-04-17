@@ -32,3 +32,5 @@ files-path:
     name: 'home'
   - path: 'module/home/editor.yml'
     name: 'homeEditor'
+  - path: 'module/warp/setting.yml'
+    name: 'warp'

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.function.MatchHomeId;
-import superarilo.main.function.home.HomeFunction;
+import superarilo.main.function.home.Impl.HomeManagerImpl;
 
 public class SetHomeCommand implements CommandExecutor {
     @Override
@@ -18,7 +18,12 @@ public class SetHomeCommand implements CommandExecutor {
             if (!s.equals("sethome")) return false;
             if (strings.length == 1){
                 if (MatchHomeId.isEnglish(strings[0])) {
-                    Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> new HomeFunction(((Player) commandSender).getPlayer(), strings[0]).setNewHome());
+                    Player player = ((Player) commandSender).getPlayer();
+                    if (!FileConfigs.fileConfigs.get("home").getStringList("disable-world").contains(player.getWorld().getName())) {
+                        new HomeManagerImpl(player).createNewHome(strings[0]);
+                    } else {
+                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.not-allow")));
+                    }
                 } else {
                     commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("sethome.illegal")));
                 }

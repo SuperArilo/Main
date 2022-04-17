@@ -1,0 +1,8 @@
+warp-group:
+  default: 4
+  admin: 20
+  builder: 14
+delay: 3
+max-warp-name-length: 8
+disable-world:
+  - ''

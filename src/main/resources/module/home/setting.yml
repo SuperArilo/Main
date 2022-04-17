@@ -5,4 +5,4 @@ homes-group:
 delay: 3
 max-home-name-length: 8
 disable-world:
-  - ''
+  - 'world'

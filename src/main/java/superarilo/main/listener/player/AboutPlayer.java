@@ -13,7 +13,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.GetPlayerInfo;
 import superarilo.main.function.TeleporThread;
 
 @SuppressWarnings("ALL")

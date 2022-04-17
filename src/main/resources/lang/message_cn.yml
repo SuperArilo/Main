@@ -54,6 +54,7 @@ sethome:
   success: '&a成功设置了一个家，id为 '
   not-item: '&c设置失败！你必须站在可站立的位置上！'
   max-number: '&c创建失败，以达到最多创建数量！'
+  not-allow: '&c此世界不能创建家！'
 editor-home:
   timeout: '&c编辑超时，会话过期，请重新编辑！'
   save-fail: '&c保存失败！会话超时，请重新编辑！'
@@ -70,4 +71,11 @@ back:
   not-player: '&a这个指令只能在游戏里使用！'
   death: '&a输入/back 返回死亡地点！'
   no-back: '&a当前没有可返回的传送点！'
+setwarp:
+  not-player: '&a这个指令只能在游戏里使用！'
+  had: '&c创建失败，已经有个相同ID的家了！'
+  illegal: '&c非法字符，请重新输入！'
+  success: '&a成功设置了一个家，id为 '
+  not-item: '&c设置失败！你必须站在可站立的位置上！'
+  max-number: '&c创建失败，以达到最多创建数量！'
 
