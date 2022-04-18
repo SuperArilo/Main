@@ -20,6 +20,8 @@ import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.mapper.PlayerFunction;
+import superarilo.main.mapper.PlayerHomeFunction;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,7 +93,7 @@ public class ShowHomeList {
     }
     private void getHomeByDataBase(String keyName){
         try {
-            setPlayerHomeList(sqlSession.getMapper(PlayerFunction.class).getPlayerHome(this.player.getUniqueId().toString()));
+            setPlayerHomeList(sqlSession.getMapper(PlayerHomeFunction.class).getPlayerHome(this.player.getUniqueId().toString()));
             Main.redisValue.setex(keyName, 43200,JSONObject.toJSONString(getPlayerHomeList()));
         } catch (Exception exception) {
             sqlSession.rollback();

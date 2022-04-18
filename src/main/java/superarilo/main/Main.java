@@ -19,6 +19,7 @@ import superarilo.main.command.warp.SetWarpCommand;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.core.Impl.SuperArilo;
 import superarilo.main.listener.home.AboutHome;
 import superarilo.main.listener.player.AboutPlayer;
 import superarilo.main.listener.WhitelistListener;
@@ -26,8 +27,6 @@ import superarilo.main.listener.cutree.CutreeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 

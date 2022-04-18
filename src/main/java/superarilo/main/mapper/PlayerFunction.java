@@ -11,5 +11,4 @@ import java.util.List;
 public interface PlayerFunction {
     @MapKey(value = "uid")
     Integer whitelistCheckUser(@Param("playerName") String playerName, @Param("uuid")String uuid);
-    List<PlayerHome> getPlayerHome(@Param("uuid") String uuid);
 }

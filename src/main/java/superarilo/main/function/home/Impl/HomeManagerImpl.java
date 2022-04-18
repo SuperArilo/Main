@@ -54,15 +54,15 @@ public class HomeManagerImpl extends HomeOnRedisImpl implements HomeManager {
             playerHome.setPlayerUUID(player.getUniqueId().toString());
             Location location = player.getLocation();
             Vector vector = location.getDirection();
-            DecimalFormat decimal = new DecimalFormat("#.00");
-            playerHome.setLocationX(Double.parseDouble(decimal.format(location.getX())));
-            playerHome.setLocationY(Double.parseDouble(decimal.format(location.getY())));
-            playerHome.setLocationZ(Double.parseDouble(decimal.format(location.getZ())));
             Material blockMaterial = location.getBlock().getRelative(BlockFace.DOWN).getType();
             if (!blockMaterial.isItem() || blockMaterial.isAir() || !blockMaterial.isBlock()) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("sethome.not-item")));
                 return;
             }
+            DecimalFormat decimal = new DecimalFormat("#.00");
+            playerHome.setLocationX(Double.parseDouble(decimal.format(location.getX())));
+            playerHome.setLocationY(Double.parseDouble(decimal.format(location.getY())));
+            playerHome.setLocationZ(Double.parseDouble(decimal.format(location.getZ())));
             playerHome.setMaterial(blockMaterial.name());
             playerHome.setWorld(player.getWorld().getName());
             playerHome.setWorldAlias(Main.mvWorldManager.getMVWorld(player.getWorld()).getAlias());
