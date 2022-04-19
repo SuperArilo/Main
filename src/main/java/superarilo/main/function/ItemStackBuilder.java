@@ -6,16 +6,17 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import java.util.List;
 
-import java.util.Arrays;
-
+@SuppressWarnings("deprecation")
 public class ItemStackBuilder {
 
     private final ItemStack itemStack;
-    private ItemMeta itemMeta;
+    private final ItemMeta itemMeta;
 
     public ItemStackBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
+        this.itemMeta = itemStack.getItemMeta();
     }
 
     public ItemStackBuilder(ItemStack itemStack, ItemMeta itemMeta) {
@@ -44,14 +45,10 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder setLore(Player player, String... lore){
+    public ItemStackBuilder setLore(Player player, List<String> lore){
         if (lore == null) return this;
-        this.itemMeta.setLore(PlaceholderAPI.setPlaceholders(player, Arrays.asList(lore)));
+        this.itemMeta.setLore(PlaceholderAPI.setPlaceholders(player, lore));
         return this;
-    }
-    public ItemStackBuilder setLoreByLines(String lore, Player player) {
-        if (lore == null) return this;
-        return setLore(player, lore.split("\\r?\\n"));
     }
     public ItemStackBuilder setAmount(int amount){
         this.itemStack.setAmount(amount);

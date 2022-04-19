@@ -19,12 +19,12 @@ import org.bukkit.potion.PotionEffectType;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.mapper.PlayerFunction;
 import superarilo.main.mapper.PlayerHomeFunction;
 
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class ShowHomeList {
 
     private final Player player;
@@ -42,12 +42,16 @@ public class ShowHomeList {
         renderMasks();
         String keyName = this.player.getUniqueId() + "_home";
         if (Main.redisValue.exists(keyName)){
-            setPlayerHomeList(JSONObject.parseArray(Main.redisValue.get(keyName), PlayerHome.class));
-            renderHomeList();
-            renderOwnerHead();
+            Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
+                setPlayerHomeList(JSONObject.parseArray(Main.redisValue.get(keyName), PlayerHome.class));
+                renderHomeList();
+                renderOwnerHead();
+            });
         } else {
-            renderLoading();
-            Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> getHomeByDataBase(keyName));
+            Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
+                renderLoading();
+                getHomeByDataBase(keyName);
+            });
         }
     }
 

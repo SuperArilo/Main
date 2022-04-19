@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.gui.warp.WarpMenu;
 
 public class SetWarpCommand implements CommandExecutor {
 
@@ -19,11 +20,12 @@ public class SetWarpCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             if (!s.equals("setwarp")) return false;
-            if (strings.length != 1) {
+            if (strings.length == 1) {
                 command.setUsage(ChatColor.translateAlternateColorCodes('&', serverPrefix + FileConfigs.fileConfigs.get("commands").getString("setwarp.usage")));
                 return false;
+            } else if (strings.length == 0){
+                new WarpMenu(((Player) commandSender).getPlayer()).open();
             }
-            System.out.println("warpID: " + strings[0]);
         } else {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + message.getString("setwarp.not-player")));
         }

@@ -34,3 +34,5 @@ files-path:
     name: 'homeEditor'
   - path: 'module/warp/setting.yml'
     name: 'warp'
+  - path: 'module/warp/menu_gui.yml'
+    name: 'menu-gui'

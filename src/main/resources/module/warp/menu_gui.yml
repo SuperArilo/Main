@@ -1,0 +1,22 @@
+menu-settings:
+  name: '地标'
+  rows: 5
+  auto-refresh: 1
+menu-warp-nbt:
+  name-space: 'menu-warp-function-nbt'
+mask:
+  material: LIGHT_BLUE_STAINED_GLASS_PANE
+  slot: [0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44]
+function:
+  server:
+    material: POTION
+    slot: 20
+    name: '&3服务器地标'
+    lore:
+      - '&6凡尔赛小镇特有的地点列表'
+  player:
+    material: player_head
+    slot: 24
+    name: '&3玩家地标'
+    lore:
+      - '&6来自玩家特有的地点列表'
