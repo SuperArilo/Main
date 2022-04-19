@@ -1,5 +1,5 @@
 package superarilo.main.function.warp;
 
-public interface WarpManager {
+public interface WarpManager extends WarpOnRedis {
     void createNewWarp(String homeId);
 }

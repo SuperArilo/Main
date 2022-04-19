@@ -17,7 +17,6 @@ public class HomeOnRedisImpl implements HomeOnRedis {
 
     @Override
     public void deleteHomeOnRedis() {
-
         Main.redisValue.del(this.playerUUID + "_home");
     }
 

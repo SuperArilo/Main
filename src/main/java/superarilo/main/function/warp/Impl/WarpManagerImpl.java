@@ -16,13 +16,14 @@ import superarilo.main.function.warp.WarpManager;
 import superarilo.main.mapper.WarpFunction;
 import java.text.DecimalFormat;
 
-public class WarpManagerImpl implements WarpManager {
+public class WarpManagerImpl extends WarpOnRedisImpl implements WarpManager {
 
     private final Player player;
     private final String serverPrefix = Main.mainPlugin.getConfig().getString("prefix");
     private final FileConfiguration messageCfg = FileConfigs.fileConfigs.get("message");
 
     public WarpManagerImpl(Player player) {
+        super(player.getUniqueId().toString());
         this.player = player;
     }
 
@@ -72,6 +73,16 @@ public class WarpManagerImpl implements WarpManager {
         });
     }
     private void saveToDataBase(SqlSession sqlSession, Warp warp, Player player, String warpId){
-
+        try {
+            sqlSession.getMapper(WarpFunction.class).insert(warp);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',serverPrefix + messageCfg.getString("setwarp.success") + warpId));
+        } catch (Exception exception) {
+            sqlSession.rollback();
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("SQL.fail") + exception.getMessage()));
+        } finally {
+            sqlSession.close();
+            deleteWarpOnRedis();
+        }
     }
+
 }

@@ -20,8 +20,8 @@ import superarilo.main.function.FileConfigs;
 import superarilo.main.function.home.EditorHomeFunction;
 import superarilo.main.function.MatchHomeId;
 import superarilo.main.function.TeleporThread;
+import superarilo.main.function.home.HomeManager;
 import superarilo.main.function.home.Impl.HomeManagerImpl;
-import superarilo.main.function.home.Impl.HomeOnRedisImpl;
 import superarilo.main.gui.home.HomeEditor;
 
 @SuppressWarnings("ALL")
@@ -46,7 +46,8 @@ public class AboutHome implements Listener {
                 new TeleporThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleporThread.Type.POINT).teleport();
             } else if (clickType.equals(ClickType.RIGHT)){
                 homeInv.close();
-                new HomeOnRedisImpl(player.getUniqueId().toString()).saveEditorTempHomeOnRedis(playerHome);
+                HomeManager homeManager = new HomeManagerImpl(player);
+                homeManager.saveEditorTempHomeOnRedis(playerHome);
                 new HomeEditor(player, playerHome).open();
             }
         }
@@ -95,7 +96,7 @@ public class AboutHome implements Listener {
     public void getEditorToHomeName(EditorHomeName event){
         String getMessage = event.getPlayerSendMessage();
         Player player = event.getPlayer();
-        HomeManagerImpl homeManager = new HomeManagerImpl(player);
+        HomeManager homeManager = new HomeManagerImpl(player);
         if (FileConfigs.fileConfigs.get("home").getInt("max-home-name-length") < getMessage.length()) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("editor-home.name-to-long")));

@@ -148,7 +148,7 @@ public class HomeManagerImpl extends HomeOnRedisImpl implements HomeManager {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("SQL.fail") + exception.getMessage()));
         } finally {
             sqlSession.close();
-            new HomeOnRedisImpl(player.getUniqueId().toString()).deleteHomeOnRedis();
+            deleteHomeOnRedis();
         }
     }
 }
