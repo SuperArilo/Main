@@ -37,7 +37,7 @@ public class WarpManagerImpl extends WarpOnRedisImpl implements WarpManager {
                     sqlSession.close();
                     return;
                 }
-                if (sqlSession.getMapper(WarpFunction.class).checkIsHaveId(warpId, player.getUniqueId().toString()) >= 1){
+                if (sqlSession.getMapper(WarpFunction.class).checkIsHaveId(warpId) >= 1){
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("setwarp.had")));
                     sqlSession.close();
                     return;

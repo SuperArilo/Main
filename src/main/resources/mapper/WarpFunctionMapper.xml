@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="superarilo.main.mapper.WarpFunction">
     <select id="checkIsHaveId" resultType="java.lang.Integer" parameterType="java.lang.String">
-        SELECT count(*)  FROM mc_warp_list where player_uuid = #{playerUUID} and warp_id = #{warpID}
+        SELECT count(*)  FROM mc_warp_list where warp_id = #{warpID}
     </select>
     <select id="getWarpQuantity" resultType="java.lang.Integer">
         select count(*) from mc_warp_list where player_uuid = #{playerUUID}
