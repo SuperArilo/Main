@@ -33,7 +33,7 @@ tpall:
 home:
   show: 'home'
   describe: '打开你保存的家列表或者传送到指定家位置'
-  usage: '&a使用方法: /home 或者 /home + <家>'
+  usage: '&a使用方法: /home 或者 /homes'
 sethome:
   show: 'sethome'
   describe: '在你所在的位置创建个新家'

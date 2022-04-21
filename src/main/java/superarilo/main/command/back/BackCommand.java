@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.TeleporThread;
+import superarilo.main.function.FunctionTool;
+import superarilo.main.function.TeleportThread;
 
 public class BackCommand implements CommandExecutor {
     @Override
@@ -17,10 +18,10 @@ public class BackCommand implements CommandExecutor {
             if (!s.equals("back")) return false;
             if (strings.length == 0){
                 if (Main.redisValue.exists(((Player) commandSender).getUniqueId() + "_back")) {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
-                    new TeleporThread((Player) commandSender, TeleporThread.Type.BACK).teleport();
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
+                    new TeleportThread((Player) commandSender, TeleportThread.Type.BACK).teleport();
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.no-back")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.no-back")));
                 }
                 return true;
             } else {
@@ -28,7 +29,7 @@ public class BackCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.not-player")));
             return true;
         }
     }

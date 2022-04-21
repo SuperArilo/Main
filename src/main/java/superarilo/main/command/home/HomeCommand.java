@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 import superarilo.main.gui.home.ShowHomeList;
 
 public class HomeCommand implements CommandExecutor {
@@ -18,9 +19,6 @@ public class HomeCommand implements CommandExecutor {
                 if (strings.length == 0){
                     new ShowHomeList((Player) commandSender).open();
                     return true;
-                } else if (strings.length == 1){
-                    System.out.println("手动传送家");
-                    return true;
                 } else {
                     command.setUsage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("commands").getString("home.usage")));
                     return false;
@@ -29,7 +27,7 @@ public class HomeCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("home.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("home.not-player")));
             return true;
         }
     }

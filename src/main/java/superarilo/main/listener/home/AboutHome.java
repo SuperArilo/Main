@@ -19,7 +19,7 @@ import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.function.home.EditorHomeFunction;
 import superarilo.main.function.MatchHomeId;
-import superarilo.main.function.TeleporThread;
+import superarilo.main.function.TeleportThread;
 import superarilo.main.function.home.HomeManager;
 import superarilo.main.function.home.Impl.HomeManagerImpl;
 import superarilo.main.gui.home.HomeEditor;
@@ -43,7 +43,7 @@ public class AboutHome implements Listener {
             PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId().toString() + "_home"), PlayerHome.class).get(inNBTSlot);
             if (clickType.equals(ClickType.LEFT)){
                 homeInv.close();
-                new TeleporThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleporThread.Type.POINT).teleport();
+                new TeleportThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleportThread.Type.POINT).teleport();
             } else if (clickType.equals(ClickType.RIGHT)){
                 homeInv.close();
                 HomeManager homeManager = new HomeManagerImpl(player);

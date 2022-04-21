@@ -1,14 +1,13 @@
 package superarilo.main.function;
 
 import com.alibaba.fastjson.JSONObject;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import superarilo.main.Main;
 
-public class TeleporThread {
+public class TeleportThread {
 
     private final Type type;
     private final Player player;
@@ -28,7 +27,7 @@ public class TeleporThread {
         RANDOM
     }
 
-    public TeleporThread (Player player, Location targetLocation, Type type){
+    public TeleportThread(Player player, Location targetLocation, Type type){
         this.player = player;
         this.type = type;
         this.targetLocation = targetLocation;
@@ -36,7 +35,7 @@ public class TeleporThread {
         this.initialHealth = player.getHealth();
     }
 
-    public TeleporThread (Player player, Player targetPlayer, Type type){
+    public TeleportThread(Player player, Player targetPlayer, Type type){
         this.player = player;
         this.targetPlayer = targetPlayer;
         this.type = type;
@@ -44,7 +43,7 @@ public class TeleporThread {
         this.initialHealth = player.getHealth();
     }
 
-    public TeleporThread (Player player, Type type){
+    public TeleportThread(Player player, Type type){
         this.player = player;
         this.type = type;
         this.initialLocation = player.getLocation();
@@ -53,7 +52,7 @@ public class TeleporThread {
 
     public void teleport() {
         final long[] timerIndex = {this.player.isOp() ? 1 : FileConfigs.fileConfigs.get("home").getLong("delay", 1) + 1};
-        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
+        this.player.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -64,7 +63,7 @@ public class TeleporThread {
                 }
                 if (hasMoved(threadPlayer) || hasLostHealth(threadPlayer)){
                     cancel();
-                    threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.break")));
+                    threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.break")));
                     return;
                 }
                 timerIndex[0] = timerIndex[0] - 1;
@@ -76,7 +75,7 @@ public class TeleporThread {
                             threadPlayer.teleportAsync(targetLocation);
                             threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation, keyName);
-                            threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success")));
                         }
                         break;
                         case BACK: {
@@ -89,7 +88,7 @@ public class TeleporThread {
                         break;
                         case PLAYER: {
                             threadPlayer.teleport(targetPlayer);
-                            threadPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success")));
                         }
                         break;
                     }

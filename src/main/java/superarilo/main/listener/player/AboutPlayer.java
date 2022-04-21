@@ -12,14 +12,14 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.TeleporThread;
+import superarilo.main.function.TeleportThread;
 
 @SuppressWarnings("ALL")
 public class AboutPlayer implements Listener {
     @EventHandler
     public void ifPlayerDeath(PlayerDeathEvent event){
         Player player = event.getPlayer();
-        TeleporThread.setPlayerBackLocation(player.getLocation(), player.getUniqueId() + "_back");
+        TeleportThread.setPlayerBackLocation(player.getLocation(), player.getUniqueId() + "_back");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.death")));
     }
     @EventHandler

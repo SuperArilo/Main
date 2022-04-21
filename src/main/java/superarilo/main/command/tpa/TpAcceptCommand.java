@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.TeleporThread;
+import superarilo.main.function.FunctionTool;
+import superarilo.main.function.TeleportThread;
 
 public class TpAcceptCommand implements CommandExecutor {
     @Override
@@ -21,16 +22,16 @@ public class TpAcceptCommand implements CommandExecutor {
                     String keyNameTpa = comGetPlayer.getUniqueId() + "_tpa_" + ((Player) commandSender).getUniqueId();
                     String keyNameTpaHere = ((Player) commandSender).getUniqueId() + "_tpahere_" + comGetPlayer.getUniqueId();
                     if (Main.redisValue.exists(keyNameTpa)){
-                        new TeleporThread(comGetPlayer, (Player) commandSender, TeleporThread.Type.PLAYER).teleport();
+                        new TeleportThread(comGetPlayer, (Player) commandSender, TeleportThread.Type.PLAYER).teleport();
                         Main.redisValue.del(keyNameTpa);
                     } else if (Main.redisValue.exists(keyNameTpaHere)){
-                        new TeleporThread((Player) commandSender, comGetPlayer,TeleporThread.Type.PLAYER);
+                        new TeleportThread((Player) commandSender, comGetPlayer, TeleportThread.Type.PLAYER);
                         Main.redisValue.del(keyNameTpaHere);
                     }else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have")));
+                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have")));
                     }
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player")));
                 }
                 return true;
             } else {
@@ -38,7 +39,7 @@ public class TpAcceptCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player")));
             return true;
         }
     }
