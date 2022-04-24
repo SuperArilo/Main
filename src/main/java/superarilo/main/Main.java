@@ -26,6 +26,7 @@ import superarilo.main.listener.cutree.CutreeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import redis.clients.jedis.Jedis;
 
@@ -94,18 +95,18 @@ public final class Main extends JavaPlugin {
         getServer().getScheduler().cancelTasks(this);
     }
     private void registerCommands(){
-        getServer().getPluginCommand("versailles").setExecutor(new ReloadCommand());
-        getServer().getPluginCommand("versailles").setTabCompleter(new ReloadCommand());
-        getServer().getPluginCommand("tpa").setExecutor(new TpaCommand());
-        getServer().getPluginCommand("tpaccept").setExecutor(new TpAcceptCommand());
-        getServer().getPluginCommand("tparefuse").setExecutor(new TpaRefuseCommand());
-        getServer().getPluginCommand("tpahere").setExecutor(new TpaHereCommand());
-        getServer().getPluginCommand("tpalist").setExecutor(new TpaList());
-        getServer().getPluginCommand("home").setExecutor(new HomeCommand());
-        getServer().getPluginCommand("back").setExecutor(new BackCommand());
-        getServer().getPluginCommand("sethome").setExecutor(new SetHomeCommand());
-        getServer().getPluginCommand("delhome").setExecutor(new DeleteHomeCommand());
-        getServer().getPluginCommand("setwarp").setExecutor(new SetWarpCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("versailles")).setExecutor(new ReloadCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("versailles")).setTabCompleter(new ReloadCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("tpa")).setExecutor(new TpaCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("tpaccept")).setExecutor(new TpAcceptCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("tparefuse")).setExecutor(new TpaRefuseCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("tpahere")).setExecutor(new TpaHereCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("tpalist")).setExecutor(new TpaList());
+        Objects.requireNonNull(getServer().getPluginCommand("home")).setExecutor(new HomeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("back")).setExecutor(new BackCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("sethome")).setExecutor(new SetHomeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("delhome")).setExecutor(new DeleteHomeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("setwarp")).setExecutor(new SetWarpCommand());
     }
     private void registerEvents(){
         getServer().getPluginManager().registerEvents(new WhitelistListener(), this);
@@ -130,7 +131,7 @@ public final class Main extends JavaPlugin {
     public static void startSocket(){
         if (mainPlugin.getConfig().getBoolean("online-talk.enable")){
             try {
-                socketClient = new SocketClient(new URI(mainPlugin.getConfig().getString("online-talk.url")));
+                socketClient = new SocketClient(new URI(mainPlugin.getConfig().getString("online-talk.url", "bull")));
                 mainPlugin.getLogger().info(ChatColor.GREEN  + "已成功连接到服务器后台！");
                 socketClient.connect();
             } catch (URISyntaxException e) {
