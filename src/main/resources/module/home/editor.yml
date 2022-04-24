@@ -57,10 +57,10 @@ saving:
   material: POTION
   name: '&e保存中...'
   lore:
-    - '§正在写入数据库...'
+    - '&b正在写入数据库...'
 saved:
   type: SAVED
   material: lime_concrete
   name: '&a保存成功！'
   lore:
-    - '§a已成功保存你的设置！'
+    - '&a已成功保存你的设置！'

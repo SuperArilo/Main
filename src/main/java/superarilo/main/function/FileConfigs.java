@@ -22,6 +22,8 @@ public class FileConfigs {
         }
     }
     public boolean reloadAllConfigs(){
+        Main.mainPlugin.saveDefaultConfig();
+        Main.mainPlugin.reloadConfig();
         reloadSQL(); //重启sql
         reloadSocket(); //重启socket链接
         reloadRedis(); //重启redis连接

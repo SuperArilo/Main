@@ -22,10 +22,10 @@ public class SetHomeCommand implements CommandExecutor {
                     if (!FileConfigs.fileConfigs.get("home").getStringList("disable-world").contains(((Player) commandSender).getWorld().getName())) {
                         new HomeManagerImpl((Player) commandSender).createNewHome(strings[0]);
                     } else {
-                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.not-allow")));
+                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.not-allow"), null));
                     }
                 } else {
-                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.illegal")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.illegal"), null));
                 }
                 return true;
             } else {
@@ -33,7 +33,7 @@ public class SetHomeCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("sethome.not-player"), null));
             return true;
         }
     }

@@ -62,6 +62,7 @@ editor-home:
   tips-home-subtitle-name: '&7支持中文，长度小8'
   wrongful-name: '&c输入的内容不合法！'
   name-to-long: '&c输入的字符超过长度8'
+  not-item: '&c设置失败！你必须站在可站立的位置上！'
 delete-home:
   not-player: '&a这个指令只能在游戏里使用！'
   no-have: '&c选中的家不存在！'

@@ -52,7 +52,7 @@ public class TeleportThread {
 
     public void teleport() {
         final long[] timerIndex = {this.player.isOp() ? 1 : FileConfigs.fileConfigs.get("home").getLong("delay", 1) + 1};
-        this.player.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
+        this.player.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting"), null));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -63,7 +63,7 @@ public class TeleportThread {
                 }
                 if (hasMoved(threadPlayer) || hasLostHealth(threadPlayer)){
                     cancel();
-                    threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.break")));
+                    threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.break"), null));
                     return;
                 }
                 timerIndex[0] = timerIndex[0] - 1;
@@ -72,29 +72,29 @@ public class TeleportThread {
                     String keyName = threadPlayer.getUniqueId() + "_back";
                     switch (getType()){
                         case POINT: {
-                            threadPlayer.teleportAsync(targetLocation);
+                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleportAsync(targetLocation));
                             threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation, keyName);
-                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success"), null));
                         }
                         break;
                         case BACK: {
                             JSONObject jsonObject = getPlayerBackLocation(keyName);
-                            Location backLocation = new Location(Main.mainPlugin.getServer().getWorld(jsonObject.getString("world")), jsonObject.getFloat("x"), jsonObject.getFloat("y"), jsonObject.getFloat("z"));
-                            threadPlayer.teleportAsync(backLocation);
+                            Location backLocation = new Location(Main.mainPlugin.getServer().getWorld(jsonObject.getString("world")), jsonObject.getFloat("x"), jsonObject.getFloat("y"), jsonObject.getFloat("z")).toHighestLocation();
+                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleportAsync(backLocation));
                             threadPlayer.playEffect(backLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation,keyName);
                         }
                         break;
                         case PLAYER: {
-                            threadPlayer.teleport(targetPlayer);
-                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success")));
+                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleport(targetPlayer));
+                            threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success"), null));
                         }
                         break;
                     }
                 }
             }
-        }.runTaskTimer(Main.mainPlugin, 0, 20L);
+        }.runTaskTimerAsynchronously(Main.mainPlugin, 0, 20L);
     }
 
     private double makePositive(double d) {

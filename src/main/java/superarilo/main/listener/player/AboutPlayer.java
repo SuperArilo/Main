@@ -1,6 +1,5 @@
 package superarilo.main.listener.player;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,20 +11,20 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 import superarilo.main.function.TeleportThread;
 
-@SuppressWarnings("ALL")
 public class AboutPlayer implements Listener {
     @EventHandler
     public void ifPlayerDeath(PlayerDeathEvent event){
         Player player = event.getPlayer();
         TeleportThread.setPlayerBackLocation(player.getLocation(), player.getUniqueId() + "_back");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("back.death")));
+        player.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.death"), null));
     }
     @EventHandler
     public void tpaClickFunction(InventoryClickEvent event){
         InventoryView inventoryView = event.getWhoClicked().getOpenInventory();
-        if (inventoryView.getTitle().equals(FileConfigs.fileConfigs.get("tpalist").getString("menu-settings.name"))){
+        if (inventoryView.title().equals(FunctionTool.setTextComponent(FileConfigs.fileConfigs.get("tpalist").getString("menu-settings.name", "GUI")))){
             event.setCancelled(true);
             if (event.getRawSlot() < 0 || event.getRawSlot() > event.getInventory().getSize()) return;
             ItemStack clickItem = event.getCurrentItem();
@@ -33,13 +32,13 @@ public class AboutPlayer implements Listener {
                 if (clickItem.getType().equals(Material.PLAYER_HEAD)){
                     Player player = (Player) event.getWhoClicked();
                     if (event.isLeftClick()){
-                        player.performCommand("tpa " + clickItem.getItemMeta().getDisplayName());
+                        player.performCommand("tpa " + clickItem.getItemMeta().displayName());
                     } else if (event.isRightClick()){
-                        player.performCommand("tpahere " + clickItem.getItemMeta().getDisplayName());
+                        player.performCommand("tpahere " + clickItem.getItemMeta().displayName());
                     }
                     inventoryView.close();
                 } else if (clickItem.getType().equals(Material.ARROW)){
-                    System.out.println(clickItem.getItemMeta().getDisplayName());
+                    System.out.println(clickItem.getItemMeta().displayName());
                 } else if (clickItem.getType().equals(Material.BARRIER)){
                     inventoryView.close();
                 }

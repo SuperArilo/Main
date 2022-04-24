@@ -1,6 +1,5 @@
 package superarilo.main.command.tpa;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 
 public class TpaRefuseCommand implements CommandExecutor {
     @Override
@@ -42,8 +42,8 @@ public class TpaRefuseCommand implements CommandExecutor {
     }
 
     private void TpaRefuseSendMessage(@NotNull CommandSender commandSender, Player comGetPlayer, String keyNameTpa) {
-        commandSender.sendMessage(PlaceholderAPI.setPlaceholders(comGetPlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tparefuse.success")));
-        comGetPlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tparefuse.sender-refuse")));
+        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tparefuse.success"), comGetPlayer));
+        comGetPlayer.sendMessage(FunctionTool.createServerSendMessage( FileConfigs.fileConfigs.get("message").getString("tparefuse.sender-refuse"), (Player) commandSender));
         Main.redisValue.del(keyNameTpa);
     }
 }

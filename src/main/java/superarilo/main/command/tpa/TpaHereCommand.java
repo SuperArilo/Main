@@ -1,10 +1,8 @@
 package superarilo.main.command.tpa;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,9 +11,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
-import superarilo.main.function.SendFunctionMessage;
+import superarilo.main.function.FunctionTool;
 
-@SuppressWarnings({"deprecation", "DuplicatedCode"})
 public class TpaHereCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -23,13 +20,16 @@ public class TpaHereCommand implements CommandExecutor {
             if(!s.equals("tpahere")) return false;
             if(strings.length == 1){
                 Player bePlayer = Main.mainPlugin.getServer().getPlayer(strings[0]);
-                if (bePlayer != null && !bePlayer.getName().equals(commandSender.getName())){
-                    commandSender.sendMessage(PlaceholderAPI.setPlaceholders(bePlayer, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.send-message")));
-                    bePlayer.sendMessage(PlaceholderAPI.setPlaceholders((Player) commandSender, Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.get-message")));
-                    bePlayer.sendMessage(new SendFunctionMessage(net.md_5.bungee.api.ChatColor.GREEN,"[同意]", ClickEvent.Action.RUN_COMMAND,"/tpaccept " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("豪爽同意"),true).getFunctionText(),new TextComponent(" 或者 "),new SendFunctionMessage(net.md_5.bungee.api.ChatColor.RED,"[拒绝]", ClickEvent.Action.RUN_COMMAND,"/tparefuse " + commandSender.getName(), HoverEvent.Action.SHOW_TEXT,new Text("残忍拒绝"),true).getFunctionText());
-                    Main.redisValue.setex(bePlayer.getUniqueId() + "_tpahere_" + ((Player) commandSender).getUniqueId(),15 ,commandSender.getName());
+                String commandName = commandSender.getName();
+                if (bePlayer != null && !bePlayer.getName().equals(commandName)){
+                    Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
+                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpahere.send-message"), bePlayer));
+                        bePlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpahere.get-message"), (Player) commandSender));
+                        bePlayer.sendMessage(Component.empty().append(FunctionTool.createClickAndHoverEventTextComponent("&a[同意]", net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND, "/tpaccept " + commandName, net.kyori.adventure.text.event.HoverEvent.Action.SHOW_TEXT, "豪爽同意")).append(Component.text(" 或者 ")).append(FunctionTool.createClickAndHoverEventTextComponent("&c[拒绝]", ClickEvent.Action.RUN_COMMAND, "/tparefuse " + commandName, HoverEvent.Action.SHOW_TEXT, "残忍拒绝")));
+                        Main.redisValue.setex(bePlayer.getUniqueId() + "_tpahere_" + ((Player) commandSender).getUniqueId(),15 , commandName);
+                    });
                 } else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.unable-player")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpahere.unable-player"), null));
                 }
                 return true;
             } else {
@@ -37,7 +37,7 @@ public class TpaHereCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpahere.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpahere.not-player"), null));
             return true;
         }
     }

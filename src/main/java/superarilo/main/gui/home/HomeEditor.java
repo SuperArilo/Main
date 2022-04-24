@@ -1,7 +1,6 @@
 package superarilo.main.gui.home;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,15 +12,15 @@ import org.bukkit.persistence.PersistentDataType;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 import superarilo.main.gui.MainGui;
 
-@SuppressWarnings("deprecation")
 public class HomeEditor extends MainGui {
 
     public HomeEditor(Player player, PlayerHome playerHome) {
         super(player);
         FileConfiguration fileCfg = FileConfigs.fileConfigs.get("homeEditor");
-        this.inventory = Main.mainPlugin.getServer().createInventory(player, 54, fileCfg.getString("menu-settings.name", "GUI"));
+        this.inventory = Main.mainPlugin.getServer().createInventory(player, 54, FunctionTool.setTextComponent(fileCfg.getString("menu-settings.name", "GUI")));
         Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
             for (int index : fileCfg.getIntegerList("mask.slot")){
                 ItemStack itemStack = new ItemStack(Material.valueOf(fileCfg.getString("mask.material", "DIRT").toUpperCase()));
@@ -38,8 +37,8 @@ public class HomeEditor extends MainGui {
                     itemStack = new ItemStack(Material.valueOf(materialName.toUpperCase()));
                 }
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', secondCfg.getString(pathName + ".name", "null")));
-                itemMeta.setLore(PlaceholderAPI.setPlaceholders(player, secondCfg.getStringList(pathName + ".lore")));
+                itemMeta.displayName(FunctionTool.setTextComponent(secondCfg.getString(pathName + ".name", "null")));
+                itemMeta.lore(FunctionTool.setListTextComponent(PlaceholderAPI.setPlaceholders(player, secondCfg.getStringList(pathName + ".lore"))));
                 //set nbt 标签
                 itemMeta.getPersistentDataContainer().set(new NamespacedKey(Main.mainPlugin, fileCfg.getString("home-nbt.name-space", "null")), PersistentDataType.STRING, secondCfg.getString(pathName + ".type", "null"));
 

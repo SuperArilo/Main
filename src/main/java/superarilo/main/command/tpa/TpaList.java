@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 import superarilo.main.gui.tpa.ShowPlayerList;
 
 public class TpaList implements CommandExecutor {
@@ -23,7 +24,7 @@ public class TpaList implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("tpalist.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpalist.not-player"), null));
             return true;
         }
     }

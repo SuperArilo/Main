@@ -19,12 +19,12 @@ import org.bukkit.potion.PotionEffectType;
 import superarilo.main.Main;
 import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
+import superarilo.main.function.FunctionTool;
 import superarilo.main.mapper.PlayerHomeFunction;
 
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class ShowHomeList {
 
     private final Player player;
@@ -35,7 +35,7 @@ public class ShowHomeList {
 
     public ShowHomeList(Player player) {
         this.player = player;
-        this.inventory = Main.mainPlugin.getServer().createInventory(this.player, listCfg.getInt("menu-settings.rows") * 9, listCfg.getString("menu-settings.name", "GUI"));
+        this.inventory = Main.mainPlugin.getServer().createInventory(this.player, listCfg.getInt("menu-settings.rows") * 9, FunctionTool.setTextComponent(listCfg.getString("menu-settings.name", "GUI")));
     }
     public void open(){
         this.player.openInventory(inventory);
@@ -65,8 +65,8 @@ public class ShowHomeList {
         ItemStack itemStack = new ItemStack(Material.valueOf(listCfg.getString("loading.material", "DIRT").toUpperCase()));
         PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP,1,1), true);
-        potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', listCfg.getString("loading.name", "null")));
-        potionMeta.setLore(listCfg.getStringList("loading.lore"));
+        potionMeta.displayName(FunctionTool.setTextComponent(listCfg.getString("loading.name", "null")));
+        potionMeta.lore(FunctionTool.setListTextComponent(listCfg.getStringList("loading.lore")));
         itemStack.setItemMeta(potionMeta);
         this.inventory.setItem(listCfg.getInt("loading.slot"), itemStack);
     }
@@ -74,8 +74,8 @@ public class ShowHomeList {
     private void renderOwnerHead() {
         ItemStack itemStack = new ItemStack(Material.valueOf(listCfg.getString("player-head.material", "DIRT").toUpperCase()));
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-        skullMeta.setDisplayName(PlaceholderAPI.setPlaceholders(this.player, listCfg.getString("player-head.name")));
-        skullMeta.setOwner(this.player.getName());
+        skullMeta.displayName(FunctionTool.setTextComponent(PlaceholderAPI.setPlaceholders(this.player, listCfg.getString("player-head.name", "null"))));
+        skullMeta.setOwningPlayer(this.player);
         itemStack.setItemMeta(skullMeta);
         this.inventory.setItem(listCfg.getInt("player-head.slot"), itemStack);
     }
@@ -87,8 +87,8 @@ public class ShowHomeList {
             PlayerHome playerHome = playerHomeList.get(index);
             ItemStack itemStack = new ItemStack(Material.valueOf(playerHome.getMaterial().toUpperCase()));
             ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(ChatColor.GREEN + "名称: " + ChatColor.AQUA + playerHome.getHomeName());
-            itemMeta.setLore(Arrays.asList(ChatColor.GRAY + "x: " + ChatColor.WHITE + playerHome.getLocationX() + ChatColor.GRAY + " y: " + ChatColor.WHITE + playerHome.getLocationY() + ChatColor.GRAY + " z: " + ChatColor.WHITE + playerHome.getLocationZ(), ChatColor.GRAY + "世界: " + ChatColor.WHITE + playerHome.getWorldAlias(), ChatColor.GRAY + "左击传送", ChatColor.GRAY + "右击编辑"));
+            itemMeta.displayName(FunctionTool.setTextComponent("&a名称: " + "&b" + playerHome.getHomeName()));
+            itemMeta.lore(FunctionTool.setListTextComponent(Arrays.asList(ChatColor.GRAY + "x: " + ChatColor.WHITE + playerHome.getLocationX() + ChatColor.GRAY + " y: " + ChatColor.WHITE + playerHome.getLocationY() + ChatColor.GRAY + " z: " + ChatColor.WHITE + playerHome.getLocationZ(), ChatColor.GRAY + "世界: " + ChatColor.WHITE + playerHome.getWorldAlias(), ChatColor.GRAY + "左击传送", ChatColor.GRAY + "右击编辑")));
             //nbt 标签
             itemMeta.getPersistentDataContainer().set(new NamespacedKey(Main.mainPlugin, listCfg.getString("home-nbt.name-space", "null")), PersistentDataType.INTEGER, index);
             itemStack.setItemMeta(itemMeta);

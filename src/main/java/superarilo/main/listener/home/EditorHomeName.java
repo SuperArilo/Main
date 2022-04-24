@@ -1,5 +1,6 @@
 package superarilo.main.listener.home;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -10,9 +11,9 @@ public class EditorHomeName extends PlayerEvent implements Cancellable {
 
     private final static HandlerList handlerList = new HandlerList();
     private boolean isCancelled = false;
-    private final String message;
+    private final Component message;
 
-    public EditorHomeName(@NotNull Player who, String message) {
+    public EditorHomeName(@NotNull Player who, Component message) {
         super(who);
         this.message = message;
     }
@@ -36,7 +37,7 @@ public class EditorHomeName extends PlayerEvent implements Cancellable {
         this.isCancelled = b;
     }
 
-    public String getPlayerSendMessage(){
+    public Component getPlayerSendMessage(){
         return this.message;
     }
 }

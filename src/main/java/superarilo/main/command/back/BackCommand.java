@@ -18,10 +18,10 @@ public class BackCommand implements CommandExecutor {
             if (!s.equals("back")) return false;
             if (strings.length == 0){
                 if (Main.redisValue.exists(((Player) commandSender).getUniqueId() + "_back")) {
-                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting"), null));
                     new TeleportThread((Player) commandSender, TeleportThread.Type.BACK).teleport();
                 } else {
-                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.no-back")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.no-back"), null));
                 }
                 return true;
             } else {
@@ -29,7 +29,7 @@ public class BackCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.not-player"), null));
             return true;
         }
     }

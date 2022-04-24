@@ -27,7 +27,7 @@ public class HomeCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("home.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("home.not-player"), null));
             return true;
         }
     }

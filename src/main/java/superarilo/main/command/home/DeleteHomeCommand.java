@@ -24,7 +24,7 @@ public class DeleteHomeCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("delete-home.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("delete-home.not-player"), null));
             return true;
         }
     }

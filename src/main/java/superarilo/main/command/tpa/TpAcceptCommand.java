@@ -25,13 +25,13 @@ public class TpAcceptCommand implements CommandExecutor {
                         new TeleportThread(comGetPlayer, (Player) commandSender, TeleportThread.Type.PLAYER).teleport();
                         Main.redisValue.del(keyNameTpa);
                     } else if (Main.redisValue.exists(keyNameTpaHere)){
-                        new TeleportThread((Player) commandSender, comGetPlayer, TeleportThread.Type.PLAYER);
+                        new TeleportThread((Player) commandSender, comGetPlayer, TeleportThread.Type.PLAYER).teleport();
                         Main.redisValue.del(keyNameTpaHere);
                     }else {
-                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have")));
+                        commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.no-have"), null));
                     }
                 } else {
-                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player")));
+                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.unable-player"), null));
                 }
                 return true;
             } else {
@@ -39,7 +39,7 @@ public class TpAcceptCommand implements CommandExecutor {
                 return false;
             }
         } else {
-            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player")));
+            commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("tpaccept.not-player"), null));
             return true;
         }
     }
