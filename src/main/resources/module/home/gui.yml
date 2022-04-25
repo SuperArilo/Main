@@ -12,7 +12,7 @@ loading:
   slot: 13
   name: '&e读取中...'
   lore:
-    - '§3正在读取数据库...'
+    - '&3正在读取数据库...'
 player-head:
   material: player_head
   slot: 13

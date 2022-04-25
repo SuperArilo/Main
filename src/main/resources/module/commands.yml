@@ -46,6 +46,10 @@ back:
   show: 'back'
   describe: '返回上一个传送地点'
   usage: '&a使用方法: /home 或者 /home + <家>'
+warp:
+  show: 'warp'
+  describe: '打开地标面板'
+  usage: '&a使用方法: /warp'
 setwarp:
   show: 'setwarp'
   describe: '在你所在的位置创建个新地标'

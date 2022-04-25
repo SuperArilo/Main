@@ -3,7 +3,6 @@ package superarilo.main.listener.home;
 import com.alibaba.fastjson.JSONObject;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import io.papermc.paper.text.PaperComponents;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -21,7 +20,7 @@ import superarilo.main.entity.PlayerHome;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.function.FunctionTool;
 import superarilo.main.function.home.EditorHomeFunction;
-import superarilo.main.function.MatchHomeId;
+import superarilo.main.function.MatchId;
 import superarilo.main.function.TeleportThread;
 import superarilo.main.function.home.HomeManager;
 import superarilo.main.function.home.Impl.HomeManagerImpl;
@@ -31,8 +30,7 @@ public class AboutHome implements Listener {
 
     @EventHandler
     public void homeClickFunction(InventoryClickEvent event){
-        Player player = (Player) event.getWhoClicked();
-        InventoryView homeInv = player.getOpenInventory();
+        InventoryView homeInv = event.getView();
         if (homeInv.title().equals(FunctionTool.setTextComponent(FileConfigs.fileConfigs.get("homelist").getString("menu-settings.name", "GUI")))){
             event.setCancelled(true);
             ItemStack currentItem = event.getCurrentItem();
@@ -42,6 +40,7 @@ public class AboutHome implements Listener {
             Integer inNBTSlot = currentItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.mainPlugin, FileConfigs.fileConfigs.get("homelist").getString("home-nbt.name-space", "null")), PersistentDataType.INTEGER);
             if (inNBTSlot == null) return;
             ClickType clickType = event.getClick();
+            Player player = (Player) event.getWhoClicked();
             PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId() + "_home"), PlayerHome.class).get(inNBTSlot);
             if (clickType.equals(ClickType.LEFT)){
                 homeInv.close();
@@ -60,13 +59,13 @@ public class AboutHome implements Listener {
         Inventory editorInv = event.getClickedInventory();
         if (editorInv == null) return;
         Player player = (Player) event.getWhoClicked();
-        if (player.getOpenInventory().title().equals(FunctionTool.setTextComponent(FileConfigs.fileConfigs.get("homeEditor").getString("menu-settings.name", "GUI")))){
+        if (event.getView().title().equals(FunctionTool.setTextComponent(FileConfigs.fileConfigs.get("homeEditor").getString("menu-settings.name", "GUI")))){
             if (editorInv.getType() == InventoryType.CHEST){
                 event.setCancelled(true);
                 ItemStack currentItem = event.getCurrentItem();
                 if (currentItem == null) return;
                 String type = currentItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.mainPlugin, FileConfigs.fileConfigs.get("homeEditor").getString("home-nbt.name-space", "null")), PersistentDataType.STRING);
-                if (type != null){
+                if (type != null && !type.equals("null")){
                     new EditorHomeFunction(player, EditorHomeFunction.FunctionType.valueOf(type.toUpperCase()), editorInv, currentItem, event.getCursor(), event.getSlot()).startEditorHome();
                 }
             } else if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || event.getAction() == InventoryAction.COLLECT_TO_CURSOR) {
@@ -100,7 +99,7 @@ public class AboutHome implements Listener {
             event.setCancelled(true);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.mainPlugin.getConfig().getString("prefix") + FileConfigs.fileConfigs.get("message").getString("editor-home.name-to-long")));
         } else {
-            if (MatchHomeId.isChineseEnglishNumber(getMessageString)){
+            if (MatchId.isChineseEnglishNumber(getMessageString)){
                 if (!homeManager.modifyHomeName(getMessageString)){
                     event.setCancelled(true);
                 } else {

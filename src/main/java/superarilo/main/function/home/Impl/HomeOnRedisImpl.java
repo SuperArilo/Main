@@ -34,7 +34,7 @@ public class HomeOnRedisImpl implements HomeOnRedis {
 
     @Override
     public  void saveEditorTempHomeOnRedis(PlayerHome playerHome) {
-        Main.redisValue.setex(this.playerUUID + "_editor_home", 10, JSONObject.toJSONString(playerHome));
+        Main.redisValue.setex(this.playerUUID + "_editor_home", 43200, JSONObject.toJSONString(playerHome));
     }
 
     @Override

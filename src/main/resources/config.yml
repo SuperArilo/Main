@@ -36,3 +36,5 @@ files-path:
     name: 'warp'
   - path: 'module/warp/menu_gui.yml'
     name: 'menu-gui'
+  - path: 'module/warp/warp_list_gui.yml'
+    name: 'warp-list-gui'

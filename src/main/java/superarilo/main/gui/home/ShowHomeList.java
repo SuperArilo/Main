@@ -56,8 +56,9 @@ public class ShowHomeList {
     }
 
     private void renderMasks() {
+        String materialName = listCfg.getString("mask.material", "Dirt").toUpperCase();
         for (int index : listCfg.getIntegerList("mask.slot")){
-            this.inventory.setItem(index, new ItemStack(Material.valueOf(listCfg.getString("mask.material", "Dirt").toUpperCase())));
+            this.inventory.setItem(index, new ItemStack(Material.valueOf(materialName)));
         }
     }
 

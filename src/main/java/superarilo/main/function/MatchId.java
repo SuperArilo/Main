@@ -2,7 +2,7 @@ package superarilo.main.function;
 
 import java.util.regex.Pattern;
 
-public class MatchHomeId {
+public class MatchId {
 
     private static final String symbol = "^[A-Za-z]+$";
     private static final String regEx = "^[\\u4E00-\\u9FA5A-Za-z0-9]+$";

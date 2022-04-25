@@ -22,10 +22,14 @@ public class HomeEditor extends MainGui {
         FileConfiguration fileCfg = FileConfigs.fileConfigs.get("homeEditor");
         this.inventory = Main.mainPlugin.getServer().createInventory(player, 54, FunctionTool.setTextComponent(fileCfg.getString("menu-settings.name", "GUI")));
         Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
+
+            //Render Masks
+            String materialOfMask = fileCfg.getString("mask.material", "DIRT").toUpperCase();
             for (int index : fileCfg.getIntegerList("mask.slot")){
-                ItemStack itemStack = new ItemStack(Material.valueOf(fileCfg.getString("mask.material", "DIRT").toUpperCase()));
+                ItemStack itemStack = new ItemStack(Material.valueOf(materialOfMask));
                 this.inventory.setItem(index, itemStack);
             }
+            //Render Function
             ConfigurationSection secondCfg = fileCfg.getConfigurationSection("function");
             if (secondCfg == null) return;
             for (String pathName : secondCfg.getKeys(false)){

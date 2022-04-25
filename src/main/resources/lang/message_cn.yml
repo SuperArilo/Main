@@ -45,7 +45,6 @@ reload:
     success: '&aredis重启成功！'
     fail: '&credits重启失败，请检查控制台！'
 home:
-  no-have: '&a这个&c家&a不存在！'
   not-player: '&a这个指令只能在游戏里使用！'
 sethome:
   not-player: '&a这个指令只能在游戏里使用！'
@@ -72,11 +71,13 @@ back:
   not-player: '&a这个指令只能在游戏里使用！'
   death: '&a输入/back 返回死亡地点！'
   no-back: '&a当前没有可返回的传送点！'
+warp:
+  not-player: '&a这个指令只能在游戏里使用！'
 setwarp:
   not-player: '&a这个指令只能在游戏里使用！'
-  had: '&c创建失败，已经有个相同ID的家了！'
+  had: '&c创建失败，已经有个相同ID的地标了！'
   illegal: '&c非法字符，请重新输入！'
-  success: '&a成功设置了一个家，id为 '
+  success: '&a成功设置了一个地标，id为 '
   not-item: '&c设置失败！你必须站在可站立的位置上！'
   max-number: '&c创建失败，以达到最多创建数量！'
 

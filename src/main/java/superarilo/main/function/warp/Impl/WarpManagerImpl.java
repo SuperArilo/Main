@@ -44,6 +44,7 @@ public class WarpManagerImpl extends WarpOnRedisImpl implements WarpManager {
                 }
             } catch (Exception exception) {
                 sqlSession.rollback();
+                exception.printStackTrace();
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("SQL.fail") + exception.getMessage()));
                 sqlSession.close();
                 return;
@@ -78,6 +79,7 @@ public class WarpManagerImpl extends WarpOnRedisImpl implements WarpManager {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',serverPrefix + messageCfg.getString("setwarp.success") + warpId));
         } catch (Exception exception) {
             sqlSession.rollback();
+            exception.printStackTrace();
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', serverPrefix + messageCfg.getString("SQL.fail") + exception.getMessage()));
         } finally {
             sqlSession.close();

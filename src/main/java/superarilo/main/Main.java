@@ -16,6 +16,7 @@ import superarilo.main.command.home.HomeCommand;
 import superarilo.main.command.home.SetHomeCommand;
 import superarilo.main.command.tpa.*;
 import superarilo.main.command.warp.SetWarpCommand;
+import superarilo.main.command.warp.WarpCommand;
 import superarilo.main.function.SocketClient;
 import superarilo.main.command.ReloadCommand;
 import superarilo.main.function.FileConfigs;
@@ -29,6 +30,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 import redis.clients.jedis.Jedis;
+import superarilo.main.listener.warp.WarpListener;
 
 public final class Main extends JavaPlugin {
 
@@ -106,6 +108,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getServer().getPluginCommand("back")).setExecutor(new BackCommand());
         Objects.requireNonNull(getServer().getPluginCommand("sethome")).setExecutor(new SetHomeCommand());
         Objects.requireNonNull(getServer().getPluginCommand("delhome")).setExecutor(new DeleteHomeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("warp")).setExecutor(new WarpCommand());
         Objects.requireNonNull(getServer().getPluginCommand("setwarp")).setExecutor(new SetWarpCommand());
     }
     private void registerEvents(){
@@ -113,6 +116,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CutreeListener(),this);
         getServer().getPluginManager().registerEvents(new AboutPlayer(), this);
         getServer().getPluginManager().registerEvents(new AboutHome(), this);
+        getServer().getPluginManager().registerEvents(new WarpListener(), this);
     }
 
     public static void startSQL(){

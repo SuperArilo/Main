@@ -26,5 +26,6 @@
     <mappers>
         <mapper resource="mapper/PlayerFunction.xml"/>
         <mapper resource="mapper/PlayerHomeMapper.xml"/>
+        <mapper resource="mapper/WarpFunctionMapper.xml"/>
     </mappers>
 </configuration>

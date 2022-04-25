@@ -1,0 +1,45 @@
+menu-settings:
+  name: '地标列表'
+  rows: 5
+  auto-refresh: 1
+warp-list-nbt:
+  name-space: 'warp-list'
+mask:
+  material: LIGHT_BLUE_STAINED_GLASS_PANE
+  slot: [36,37,38,42,43]
+function:
+  loading:
+    material: POTION
+    slot: 40
+    name: '&e读取中...'
+    lore:
+      - '&3正在读取数据库...'
+  noprev:
+    type: NULL
+    material: barrier
+    slot: 39
+    name: ' '
+  prev:
+    type: PREVIOUS
+    material: BROWN_STAINED_GLASS_PANE
+    slot: 39
+    name: '&6上一页'
+    lore:
+      - '&b返回上一页列表'
+  next:
+    type: NEXT
+    material: player_head
+    slot: 41
+    name: '&3玩家地标'
+    lore:
+      - '&6进入下一页列表'
+  back:
+    type: BACK
+    material: arrow
+    slot: 44
+    name: '&3返回'
+    lore:
+      - '&6返回上一级菜单'
+warp-item:
+  type: WARP
+  slot: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]

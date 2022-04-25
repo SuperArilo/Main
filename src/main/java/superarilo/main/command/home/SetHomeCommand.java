@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import superarilo.main.Main;
 import superarilo.main.function.FileConfigs;
 import superarilo.main.function.FunctionTool;
-import superarilo.main.function.MatchHomeId;
+import superarilo.main.function.MatchId;
 import superarilo.main.function.home.Impl.HomeManagerImpl;
 
 public class SetHomeCommand implements CommandExecutor {
@@ -18,7 +18,7 @@ public class SetHomeCommand implements CommandExecutor {
         if (commandSender instanceof Player){
             if (!s.equals("sethome")) return false;
             if (strings.length == 1){
-                if (MatchHomeId.isEnglish(strings[0])) {
+                if (MatchId.isEnglish(strings[0])) {
                     if (!FileConfigs.fileConfigs.get("home").getStringList("disable-world").contains(((Player) commandSender).getWorld().getName())) {
                         new HomeManagerImpl((Player) commandSender).createNewHome(strings[0]);
                     } else {
