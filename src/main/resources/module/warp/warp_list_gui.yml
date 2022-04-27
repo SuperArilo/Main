@@ -6,7 +6,7 @@ warp-list-nbt:
   name-space: 'warp-list'
 mask:
   material: LIGHT_BLUE_STAINED_GLASS_PANE
-  slot: [36,37,38,42,43]
+  slot: [36,37,38,39,42,43]
 function:
   loading:
     material: POTION
@@ -28,11 +28,11 @@ function:
       - '&b返回上一页列表'
   next:
     type: NEXT
-    material: player_head
+    material: BROWN_STAINED_GLASS_PANE
     slot: 41
-    name: '&3玩家地标'
+    name: '&6下一页'
     lore:
-      - '&6进入下一页列表'
+      - '&b进入下一页列表'
   back:
     type: BACK
     material: arrow

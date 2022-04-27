@@ -87,6 +87,7 @@ public class WarpListMenu {
             sqlSession.rollback();
             exception.printStackTrace();
             this.inventory.close();
+            return;
         } finally {
             sqlSession.close();
         }
@@ -116,6 +117,44 @@ public class WarpListMenu {
     private void renderDone(){
         ItemStack itemStack = new ItemStack(Material.valueOf(configuration.getString("mask.material", "DIRT").toUpperCase()));
         this.inventory.setItem(configuration.getInt("function.loading.slot"), itemStack);
+        if (getWarpList().size() < configuration.getInt("menu-settings.rows", 5) * 9) {
+            renderBarrier();
+        } else {
+            renderPrevPage();
+        }
+    }
+
+    private void renderPrevPage(){
+        //Render Previous Page
+        ItemStack preItem = new ItemStack(Material.valueOf(configuration.getString("function.prev.material","DIRT").toUpperCase()));
+        ItemMeta preMeta = preItem.getItemMeta();
+        preMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.prev.name", "null")));
+        preMeta.lore(FunctionTool.setListTextComponent(configuration.getStringList("function.prev.lore")));
+        //Set NBT
+        preMeta.getPersistentDataContainer().set(new NamespacedKey(Main.mainPlugin, configuration.getString("warp-list-nbt.name-space", "null")), PersistentDataType.STRING, configuration.getString("function.prev.type","null"));
+        preItem.setItemMeta(preMeta);
+        this.inventory.setItem(configuration.getInt("function.prev.slot"), preItem);
+    }
+
+    private void renderNextPage(){
+        //Render Next Page
+        ItemStack nextItem = new ItemStack(Material.valueOf(configuration.getString("function.next.material","DIRT").toUpperCase()));
+        ItemMeta nextMeta = nextItem.getItemMeta();
+        nextMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.next.name", "null")));
+        nextMeta.lore(FunctionTool.setListTextComponent(configuration.getStringList("function.next.lore")));
+        //Set NBT
+        nextMeta.getPersistentDataContainer().set(new NamespacedKey(Main.mainPlugin, configuration.getString("warp-list-nbt.name-space", "null")), PersistentDataType.STRING, configuration.getString("function.next.type","null"));
+        nextItem.setItemMeta(nextMeta);
+        this.inventory.setItem(configuration.getInt("function.next.slot"), nextItem);
+    }
+
+    private void renderBarrier(){
+        ItemStack barrierItem = new ItemStack(Material.valueOf(configuration.getString("function.noprev.material","DIRT").toUpperCase()));
+        ItemMeta barrierMeta = barrierItem.getItemMeta();
+        barrierMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.noprev.name", "null")));
+        barrierMeta.lore(FunctionTool.setListTextComponent(configuration.getStringList("function.noprev.lore")));
+        barrierItem.setItemMeta(barrierMeta);
+        this.inventory.setItem(configuration.getInt("function.prev.slot"), barrierItem);
     }
 
     private List<Warp> getWarpList() {

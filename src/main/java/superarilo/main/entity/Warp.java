@@ -22,6 +22,7 @@ public class Warp {
     private double vectorY;
     private double vectorZ;
     private String warpClass;
+    private String describe;
 
     public int getId() {
         return id;
@@ -133,5 +134,13 @@ public class Warp {
 
     public void setWarpClass(String warpClass) {
         this.warpClass = warpClass;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }
