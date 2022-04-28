@@ -6,7 +6,7 @@ warp-list-nbt:
   name-space: 'warp-list'
 mask:
   material: LIGHT_BLUE_STAINED_GLASS_PANE
-  slot: [36,37,38,39,42,43]
+  slot: [36,37,38,39,40,41,42,43]
 function:
   loading:
     material: POTION
@@ -18,7 +18,7 @@ function:
     type: NULL
     material: barrier
     slot: 39
-    name: ' '
+    name: ''
   prev:
     type: PREVIOUS
     material: BROWN_STAINED_GLASS_PANE
@@ -33,6 +33,11 @@ function:
     name: '&6下一页'
     lore:
       - '&b进入下一页列表'
+  nonext:
+    type: NULL
+    material: barrier
+    slot: 41
+    name: ''
   back:
     type: BACK
     material: arrow

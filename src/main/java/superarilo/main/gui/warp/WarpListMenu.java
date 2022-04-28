@@ -29,6 +29,8 @@ public class WarpListMenu {
     private final Inventory inventory;
     private final FileConfiguration configuration = FileConfigs.fileConfigs.get("warp-list-gui");
     private List<Warp> warpList = null;
+    private Integer warpTotal = null;
+
 
     public WarpListMenu(Player player, @NotNull MenuType menuType){
         this.player = player;
@@ -82,11 +84,12 @@ public class WarpListMenu {
             className = "player";
         }
         try {
-            setWarpList(sqlSession.getMapper(WarpFunction.class).getWarpList(1, 1, className));
+            this.warpList = sqlSession.getMapper(WarpFunction.class).getWarpList(0, 36, className);
+            this.warpTotal = sqlSession.getMapper(WarpFunction.class).getWarpCount(className);
         } catch (Exception exception){
             sqlSession.rollback();
             exception.printStackTrace();
-            this.inventory.close();
+            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, this.inventory::close);
             return;
         } finally {
             sqlSession.close();
@@ -94,12 +97,11 @@ public class WarpListMenu {
         renderWarpList();
         renderDone();
     }
-
     private void renderWarpList(){
-        if (this.warpList == null || this.warpList.size() == 0) return;
         List<Integer> indexList = configuration.getIntegerList("warp-item.slot");
-        for (int index = 0;index < this.warpList.size();index++){
-            Warp warp = this.warpList.get(index);
+        if (warpList.size() == 0) return;
+        for (int index = 0;index < warpList.size();index++){
+            Warp warp = warpList.get(index);
             ItemStack itemStack = new ItemStack(Material.valueOf(warp.getMaterial().toUpperCase()));
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.displayName(FunctionTool.setTextComponent("&a名称: " + "&b" + warp.getWarpName()));
@@ -116,11 +118,17 @@ public class WarpListMenu {
 
     private void renderDone(){
         ItemStack itemStack = new ItemStack(Material.valueOf(configuration.getString("mask.material", "DIRT").toUpperCase()));
+        int chestCount = configuration.getInt("menu-settings.rows", 5) * 9;
         this.inventory.setItem(configuration.getInt("function.loading.slot"), itemStack);
-        if (getWarpList().size() < configuration.getInt("menu-settings.rows", 5) * 9) {
-            renderBarrier();
-        } else {
+        if (this.warpTotal < chestCount) {
+            renderNoNextBarrier();
+            renderNoPrevBarrier();
+        } else if (this.warpList.size() <= chestCount && this.warpTotal > chestCount){
             renderPrevPage();
+            renderNoNextBarrier();
+        } else if (this.warpList.size() == chestCount || this.warpTotal > chestCount){
+            renderPrevPage();
+            renderNextPage();
         }
     }
 
@@ -148,7 +156,7 @@ public class WarpListMenu {
         this.inventory.setItem(configuration.getInt("function.next.slot"), nextItem);
     }
 
-    private void renderBarrier(){
+    private void renderNoPrevBarrier(){
         ItemStack barrierItem = new ItemStack(Material.valueOf(configuration.getString("function.noprev.material","DIRT").toUpperCase()));
         ItemMeta barrierMeta = barrierItem.getItemMeta();
         barrierMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.noprev.name", "null")));
@@ -157,12 +165,13 @@ public class WarpListMenu {
         this.inventory.setItem(configuration.getInt("function.prev.slot"), barrierItem);
     }
 
-    private List<Warp> getWarpList() {
-        return warpList;
-    }
-
-    public void setWarpList(List<Warp> warpList) {
-        this.warpList = warpList;
+    private void renderNoNextBarrier(){
+        ItemStack barrierItem = new ItemStack(Material.valueOf(configuration.getString("function.nonext.material","DIRT").toUpperCase()));
+        ItemMeta barrierMeta = barrierItem.getItemMeta();
+        barrierMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.nonext.name", "null")));
+        barrierMeta.lore(FunctionTool.setListTextComponent(configuration.getStringList("function.nonext.lore")));
+        barrierItem.setItemMeta(barrierMeta);
+        this.inventory.setItem(configuration.getInt("function.nonext.slot"), barrierItem);
     }
 
     public enum MenuType{
