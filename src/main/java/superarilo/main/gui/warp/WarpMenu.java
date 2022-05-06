@@ -42,7 +42,7 @@ public class WarpMenu extends MainGui {
            skullMeta.setOwningPlayer(player);
            skullMeta.displayName(FunctionTool.setTextComponent(configuration.getString("function.player.name", "null")));
            skullMeta.lore(FunctionTool.setListTextComponent(PlaceholderAPI.setPlaceholders(player, configuration.getStringList("function.player.lore"))));
-           //Ser NBT
+           //Set NBT
            skullMeta.getPersistentDataContainer().set(new NamespacedKey(Main.mainPlugin, configuration.getString("menu-warp-nbt.name-space", "null")), PersistentDataType.STRING, configuration.getString("function.player.type","null"));
            itemStack.setItemMeta(skullMeta);
            this.inventory.setItem(configuration.getInt("function.player.slot"), itemStack);

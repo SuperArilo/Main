@@ -73,7 +73,7 @@ public class HomeManagerImpl extends HomeOnRedisImpl implements HomeManager {
     }
 
     @Override
-    public void deleteHome(String homeId) {
+    public void  deleteHome(String homeId) {
         Main.mainPlugin.getServer().getScheduler().runTaskAsynchronously(Main.mainPlugin, () -> {
             SqlSession sqlSession = Main.SQL_SESSIONS.openSession(true);
             try {
@@ -91,6 +91,7 @@ public class HomeManagerImpl extends HomeOnRedisImpl implements HomeManager {
                 player.sendMessage(FunctionTool.createServerSendMessage(messageCfg.getString("SQL.fail") + exception.getCause().getMessage(), null));
             } finally {
                 sqlSession.close();
+                deleteHomeOnRedis();
             }
         });
     }

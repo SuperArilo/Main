@@ -18,7 +18,6 @@ public class BackCommand implements CommandExecutor {
             if (!s.equals("back")) return false;
             if (strings.length == 0){
                 if (Main.redisValue.exists(((Player) commandSender).getUniqueId() + "_back")) {
-                    commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting"), null));
                     new TeleportThread((Player) commandSender, TeleportThread.Type.BACK).teleport();
                 } else {
                     commandSender.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("back.no-back"), null));

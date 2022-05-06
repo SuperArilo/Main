@@ -51,7 +51,7 @@ public class TeleportThread {
     }
 
     public void teleport() {
-        final long[] timerIndex = {this.player.isOp() ? 1 : FileConfigs.fileConfigs.get("home").getLong("delay", 1) + 1};
+        final int[] timerIndex = {this.player.isOp() ? 1 : Main.mainPlugin.getConfig().getInt("teleport-delay", 1)};
         this.player.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.teleporting"), null));
         new BukkitRunnable() {
             @Override
@@ -66,13 +66,13 @@ public class TeleportThread {
                     threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.break"), null));
                     return;
                 }
-                timerIndex[0] = timerIndex[0] - 1;
+                timerIndex[0]--;
                 if (timerIndex[0] == 0){
                     cancel();
                     String keyName = threadPlayer.getUniqueId() + "_back";
                     switch (getType()){
                         case POINT: {
-                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleportAsync(targetLocation));
+                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleport(targetLocation));
                             threadPlayer.playEffect(targetLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation, keyName);
                             threadPlayer.sendMessage(FunctionTool.createServerSendMessage(FileConfigs.fileConfigs.get("message").getString("teleport.success"), null));
@@ -81,7 +81,7 @@ public class TeleportThread {
                         case BACK: {
                             JSONObject jsonObject = getPlayerBackLocation(keyName);
                             Location backLocation = new Location(Main.mainPlugin.getServer().getWorld(jsonObject.getString("world")), jsonObject.getFloat("x"), jsonObject.getFloat("y"), jsonObject.getFloat("z")).toHighestLocation();
-                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleportAsync(backLocation));
+                            Main.mainPlugin.getServer().getScheduler().runTask(Main.mainPlugin, () -> threadPlayer.teleport(backLocation));
                             threadPlayer.playEffect(backLocation, Effect.CLICK1, null);
                             setPlayerBackLocation(initialLocation,keyName);
                         }

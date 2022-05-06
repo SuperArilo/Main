@@ -9,6 +9,7 @@ database:
   username: 'root'
   userpwd: 'mysql123456@'
 white-list: false
+teleport-delay: 3
 online-talk:
   enable: false
   url: 'ws://localhost:3090/api/onlinetalk/'

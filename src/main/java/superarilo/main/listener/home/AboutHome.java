@@ -42,13 +42,16 @@ public class AboutHome implements Listener {
             ClickType clickType = event.getClick();
             Player player = (Player) event.getWhoClicked();
             PlayerHome playerHome = JSONObject.parseArray(Main.redisValue.get(player.getUniqueId() + "_home"), PlayerHome.class).get(inNBTSlot);
+            if (playerHome == null){
+                homeInv.close();
+                return;
+            }
             if (clickType.equals(ClickType.LEFT)){
                 homeInv.close();
                 new TeleportThread(player, new Location(Main.mainPlugin.getServer().getWorld(playerHome.getWorld()),playerHome.getLocationX(),playerHome.getLocationY(),playerHome.getLocationZ()).setDirection(new Vector().setX(playerHome.getVectorX()).setY(playerHome.getVectorY()).setZ(playerHome.getVectorZ())), TeleportThread.Type.POINT).teleport();
             } else if (clickType.equals(ClickType.RIGHT)){
                 homeInv.close();
-                HomeManager homeManager = new HomeManagerImpl(player);
-                homeManager.saveEditorTempHomeOnRedis(playerHome);
+                new HomeManagerImpl(player).saveEditorTempHomeOnRedis(playerHome);
                 new HomeEditor(player, playerHome).open();
             }
         }
